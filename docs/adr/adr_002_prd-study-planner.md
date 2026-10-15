@@ -1,7 +1,6 @@
 # Study planner — product requirements
 
 **Status:** Draft for hackathon MVP  
-**Owner:** Nimesh Maslekar  
 **Target:** A working, explainable demo built during the Graph Hacks hackathon  
 **Primary track:** Agents That Act on Connected Data  
 **Secondary fit:** Agent Memory and Coordination, through persistent learner progress
