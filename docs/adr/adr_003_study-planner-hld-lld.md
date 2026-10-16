@@ -1,10 +1,10 @@
 # ADR 003: Study planner HLD and LLD
 
-**Status:** Proposed — product-owner direction captured; provider and course decisions pending  
+**Status:** Proposed — first implementation slice underway; auth and LLM details remain open
 **Date:** 2026-10-15  
 **Related:** [Study planner PRD](adr_002_prd-study-planner.md)
 
-> This is a design proposal, not an implementation contract yet. I have included my recommendation and the trade-offs so we can agree on the decisions before coding. Once we confirm the open choices, update the status to **Accepted** and treat the selected design as the team's working agreement.
+> This is a design proposal with the first vertical slice now underway. FastAPI, server-rendered pages, the multi-course direction, and Foundational Mathematics as the first demo course have product-owner direction. Firebase setup details and the LLM call scope remain open and should be finalized before those integrations are treated as requirements.
 
 ## 1. Decision to make
 
@@ -260,7 +260,7 @@ These are the choices Nimesh has already made; implementation details remain sub
 
 ## 8. Remaining decisions for Nimesh
 
-1. **First subject to fully author:** My recommendation is Software Testing, because the hackathon audience can validate the topics and it allows a clean chain from testing fundamentals to test types and automation. An alternative is foundational Mathematics, which gives a very clear prerequisite example but requires careful level/syllabus choice. The longer-term catalog can contain all the subjects above; for the first vertical slice, I recommend making one course genuinely usable instead of shipping nine shallow/demo-only catalogs. Do you agree with that sequencing, and which course should we start with?
+1. **First subject to fully author:** Nimesh selected **Foundational Mathematics** for the first demo graph. Begin with arithmetic, ratios, equations, functions, limits, and derivatives, while keeping course identifiers and graph queries course-agnostic. The longer-term catalog remains the set of subjects in section 7.
 2. **First screen:** With real sign-in, my recommendation is: signed-out users see Google sign-in; new users complete a short course/exam/time setup; returning users land directly on their next recommended session. Is that the experience you want?
 3. **Authentication provider:** Is Firebase Authentication with Google sign-in acceptable as the first provider to learn? Firebase currently lists most auth methods as no-cost on Spark and 50K standard-auth monthly active users in its no-cost tier; phone/SMS and the rest of the hosting/LLM stack have separate billing considerations. Confirm the final plan and project setup in the Firebase console before relying on any quota.
 4. **LLM use:** My recommendation is one optional call only after deterministic plan creation, to rewrite the “Why this?” explanation; no LLM call on every page view, no generation of course content, and a deterministic fallback when the configured budget/quota is unavailable. Is this the intended scope?
@@ -270,7 +270,7 @@ These are the choices Nimesh has already made; implementation details remain sub
 - [x] FastAPI and server-rendered UI selected.
 - [x] LiteLLM requested with calls kept within a strict budget; provider still to be selected.
 - [x] Real authentication and authorization requested as part of the learning scope.
-- [x] Multi-subject product direction recorded; the first fully supported course is still to be chosen.
-- [ ] Nimesh confirms the first course, first screen, auth provider, and LLM call scope.
+- [x] Multi-subject product direction recorded; Foundational Mathematics selected as the first demo course.
+- [ ] Nimesh confirms the first screen, final auth provider/setup, and LLM call scope.
 - [ ] ADR updated with these final decisions and status changed to **Accepted** before implementation begins.
 
