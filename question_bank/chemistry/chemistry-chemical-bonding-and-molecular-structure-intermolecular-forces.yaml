@@ -1,0 +1,53 @@
+subtopic_id: chemistry-chemical-bonding-and-molecular-structure-intermolecular-forces
+questions:
+- id: intermolecular-forces-applications-and-analysis-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Chemical Bonding and Molecular
+    Structure and this lesson?
+  options:
+  - intermolecular forces (London dispersion, dipole-dipole, hydrogen bonding)
+  - OAuth token rotation
+  - backpropagation
+  - population bottleneck
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept intermolecular forces (London dispersion, dipole-dipole,
+    hydrogen bonding) in the unit.
+  explanation: intermolecular forces (London dispersion, dipole-dipole, hydrogen bonding)
+    is one of the named concepts in this unit. Use its definition and relationships
+    in context, rather than treating the name alone as understanding.
+- id: intermolecular-forces-applications-and-analysis-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Chemical Bonding and Molecular
+    Structure and this lesson?
+  options:
+  - molecular orbital theory
+  - OAuth token rotation
+  - backpropagation
+  - population bottleneck
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept molecular orbital theory in the unit.
+  explanation: molecular orbital theory is one of the named concepts in this unit.
+    Use its definition and relationships in context, rather than treating the name
+    alone as understanding.
+- id: intermolecular-forces-applications-and-analysis-reasoning
+  level: 3
+  stem: Which check best supports a chemical calculation?
+  options:
+  - Check atom and charge balance, units, conditions, and agreement with the chemical
+    model.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Check atom and charge balance, units, conditions, and agreement with
+    the chemical model. Write a balanced equation or particle-level model first. Track
+    atoms, charge, units, and conditions; show the calculation; then check whether
+    the magnitude and direction agree with the chemical model.

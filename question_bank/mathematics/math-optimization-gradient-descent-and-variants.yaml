@@ -1,0 +1,23 @@
+subtopic_id: math-optimization-gradient-descent-and-variants
+questions:
+- id: gd-1
+  level: 1
+  stem: "The gradient descent update with step size η is:"
+  options: ["x ← x − η∇f(x)", "x ← x + η∇f(x)", "x ← x − η f(x)", "x ← ∇f(x)"]
+  answer: 0
+  hints: ["Move opposite to the direction of steepest ascent."]
+  explanation: "Steepest descent follows −∇f."
+- id: gd-2
+  level: 2
+  stem: "On f(x)=x² with step size 1.0 starting at x=1, gradient descent will:"
+  options: ["converge to 0 in one step", "oscillate between 1 and −1", "diverge to infinity", "stay at 1"]
+  answer: 1
+  hints: ["f′(x)=2x. Compute x₁ = 1 − 1·2."]
+  explanation: "x₁ = −1, x₂ = 1, ... it oscillates."
+- id: gd-3
+  level: 3
+  stem: "For an L-smooth convex function, a safe constant step size is:"
+  options: ["η = 1/L", "η = L", "η = 2L", "η = 10"]
+  answer: 0
+  hints: ["The step must be small relative to curvature."]
+  explanation: "η ≤ 1/L guarantees monotone decrease."

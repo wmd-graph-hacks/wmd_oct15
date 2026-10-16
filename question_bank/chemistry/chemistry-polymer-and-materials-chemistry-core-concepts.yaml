@@ -1,0 +1,52 @@
+subtopic_id: chemistry-polymer-and-materials-chemistry-core-concepts
+questions:
+- id: polymerization-foundations-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Polymer and Materials Chemistry
+    and this lesson?
+  options:
+  - Polymerization (addition, condensation, living)
+  - OAuth token rotation
+  - backpropagation
+  - population bottleneck
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept Polymerization (addition, condensation, living) in the unit.
+  explanation: Polymerization (addition, condensation, living) is one of the named
+    concepts in this unit. Use its definition and relationships in context, rather
+    than treating the name alone as understanding.
+- id: polymerization-foundations-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Polymer and Materials Chemistry
+    and this lesson?
+  options:
+  - polymer molecular weight
+  - OAuth token rotation
+  - backpropagation
+  - population bottleneck
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept polymer molecular weight in the unit.
+  explanation: polymer molecular weight is one of the named concepts in this unit.
+    Use its definition and relationships in context, rather than treating the name
+    alone as understanding.
+- id: polymerization-foundations-reasoning
+  level: 3
+  stem: Which check best supports a chemical calculation?
+  options:
+  - Check atom and charge balance, units, conditions, and agreement with the chemical
+    model.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Check atom and charge balance, units, conditions, and agreement with
+    the chemical model. Write a balanced equation or particle-level model first. Track
+    atoms, charge, units, and conditions; show the calculation; then check whether
+    the magnitude and direction agree with the chemical model.

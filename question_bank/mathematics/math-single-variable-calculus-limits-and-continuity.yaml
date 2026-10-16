@@ -1,0 +1,23 @@
+subtopic_id: math-single-variable-calculus-limits-and-continuity
+questions:
+- id: lim-1
+  level: 1
+  stem: "What is lim_{x→0} sin(x)/x?"
+  options: ["0", "1", "∞", "does not exist"]
+  answer: 1
+  hints: ["It is a standard limit.", "Compare sin x ≈ x near 0."]
+  explanation: "This is the fundamental trigonometric limit and equals 1."
+- id: lim-2
+  level: 2
+  stem: "What is lim_{x→2} (x² − 4)/(x − 2)?"
+  options: ["0", "2", "4", "does not exist"]
+  answer: 2
+  hints: ["Factor the numerator.", "x² − 4 = (x−2)(x+2)."]
+  explanation: "After cancelling x−2 the limit is x+2 → 4."
+- id: lim-3
+  level: 3
+  stem: "A function f is continuous at a if:"
+  options: ["f(a) exists", "lim_{x→a} f(x) exists", "lim_{x→a} f(x) exists and equals f(a)", "f is differentiable at a"]
+  answer: 2
+  hints: ["Three things must be true together: defined, limit exists, they agree."]
+  explanation: "Continuity requires the limit to exist and equal f(a)."

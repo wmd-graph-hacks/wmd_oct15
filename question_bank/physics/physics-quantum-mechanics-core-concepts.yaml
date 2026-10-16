@@ -1,0 +1,93 @@
+subtopic_id: physics-quantum-mechanics-core-concepts
+questions:
+- id: qm-1
+  level: 1
+  stem: In the Born interpretation, what does |ψ(x)|² represent?
+  options:
+  - The particle's energy at x
+  - The probability density of finding the particle near x
+  - The particle's momentum at x
+  - The force on the particle at x
+  answer: 1
+  hints:
+  - It is always non-negative.
+  - Integrated over all space it equals 1.
+  explanation: '|ψ|² is the probability density; its integral over all space is 1
+    for a normalized state.'
+- id: qm-2
+  level: 2
+  stem: What does the Heisenberg uncertainty principle say about position and momentum?
+  options:
+  - Both can be known exactly at once
+  - The product of their uncertainties has a lower bound of ħ/2
+  - Momentum is always zero when position is known
+  - Uncertainty only comes from poor instruments
+  answer: 1
+  hints:
+  - It is a property of the state, not of the equipment.
+  - Δx Δp ≥ ħ/2.
+  explanation: Δx·Δp ≥ ħ/2 is a fundamental limit of quantum states.
+- id: qm-3
+  level: 3
+  stem: Two electrons cannot occupy the same quantum state. Which principle is this?
+  options:
+  - Pauli exclusion principle
+  - Correspondence principle
+  - Superposition principle
+  - Equivalence principle
+  answer: 0
+  hints:
+  - It applies to identical fermions.
+  - It helps explain the structure of the periodic table.
+  explanation: The Pauli exclusion principle forbids identical fermions from sharing
+    a quantum state.
+- id: wave-particle-duality-foundations-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Quantum Mechanics and this
+    lesson?
+  options:
+  - Wave-particle duality
+  - access control list
+  - DNA replication
+  - transaction isolation
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept Wave-particle duality in the unit.
+  explanation: Wave-particle duality is one of the named concepts in this unit. Use
+    its definition and relationships in context, rather than treating the name alone
+    as understanding.
+- id: wave-particle-duality-foundations-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Quantum Mechanics and this
+    lesson?
+  options:
+  - Schrödinger equation (time-dependent and time-independent)
+  - access control list
+  - DNA replication
+  - transaction isolation
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept Schrödinger equation (time-dependent and time-independent)
+    in the unit.
+  explanation: Schrödinger equation (time-dependent and time-independent) is one of
+    the named concepts in this unit. Use its definition and relationships in context,
+    rather than treating the name alone as understanding.
+- id: wave-particle-duality-foundations-reasoning
+  level: 3
+  stem: Which check best supports a physical model's prediction?
+  options:
+  - Check dimensions and limiting cases, then compare with measurement and uncertainty.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Check dimensions and limiting cases, then compare with measurement
+    and uncertainty. Draw the system and choose coordinates and sign conventions.
+    State approximations, derive the relation before inserting values, preserve units,
+    and check limiting cases or conservation laws.

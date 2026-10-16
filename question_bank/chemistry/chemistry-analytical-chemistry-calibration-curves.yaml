@@ -1,0 +1,53 @@
+subtopic_id: chemistry-analytical-chemistry-calibration-curves
+questions:
+- id: calibration-curves-applications-and-analysis-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Analytical Chemistry and
+    this lesson?
+  options:
+  - calibration curves
+  - OAuth token rotation
+  - backpropagation
+  - population bottleneck
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept calibration curves in the unit.
+  explanation: calibration curves is one of the named concepts in this unit. Use its
+    definition and relationships in context, rather than treating the name alone as
+    understanding.
+- id: calibration-curves-applications-and-analysis-application
+  level: 2
+  stem: Before drawing a conclusion about calibration curves, what should you do?
+  options:
+  - Define how the concept is used in this problem and check the relevant assumptions
+    or evidence.
+  - Assume the term has the same meaning in every context.
+  - Ignore conditions that could limit the model.
+  - Accept the first plausible result without checking it.
+  answer: 0
+  hints:
+  - A familiar label does not establish that a model applies.
+  - Check the concept in its specific context.
+  explanation: calibration curves should be interpreted in context. Write a balanced
+    equation or particle-level model first. Track atoms, charge, units, and conditions;
+    show the calculation; then check whether the magnitude and direction agree with
+    the chemical model.
+- id: calibration-curves-applications-and-analysis-reasoning
+  level: 3
+  stem: Which check best supports a chemical calculation?
+  options:
+  - Check atom and charge balance, units, conditions, and agreement with the chemical
+    model.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Check atom and charge balance, units, conditions, and agreement with
+    the chemical model. Write a balanced equation or particle-level model first. Track
+    atoms, charge, units, and conditions; show the calculation; then check whether
+    the magnitude and direction agree with the chemical model.

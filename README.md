@@ -1,6 +1,6 @@
 # Study Planner
 
-An explainable study planner built with FastAPI and FalkorDB for **Track 01: Agents That Act on Connected Data**. The first course is a small Foundational Mathematics syllabus. Graph traversal finds the learner's prerequisite gaps and linked resources; optional AI selects and orders only among those retrieved candidates, then the backend validates its selection before saving the plan.
+An explainable study planner built with FastAPI and FalkorDB for **Track 01: Agents That Act on Connected Data**. Nine subjects are loaded from `artifacts/` (mathematics plus eight flat-structure subjects; see the subject notes below). Graph traversal finds the learner's prerequisite gaps and linked resources; optional AI selects and orders only among those retrieved candidates, then the backend validates its selection before saving the plan.
 
 ## Run locally
 
@@ -92,3 +92,23 @@ The default `AUTH_MODE=demo` is only for local development. To use Google sign-i
 - FalkorDB stores course topics, prerequisite relationships, resources, targeted checks, learner evidence, and persisted plans.
 - Graph retrieval and knowledge updates are deterministic; optional LiteLLM may select and order graph candidates. Configure Gemini as described above. The graph-validated fallback remains available if the provider is unavailable.
 - Local demo authentication is not suitable for a public deployment. Firebase session verification is enabled when `AUTH_MODE=firebase`.
+
+## Study agent (hackathon slice)
+
+- Load every subject under `artifacts/` into `wmd_kg`: `python -m app.kg.loader` (also runs idempotently at app start; `--root artifacts/physics` loads one subject, `--dry-run` only parses and prints data-quality facts).
+- No Docker and Python 3.12+? `pip install -e ".[embedded]"` then `python scripts/run_embedded.py`, sign in with demo auth, open `/agent`.
+- Agent: `app/agent` (deterministic playbook, plus LLM tool-calling when `AI_ENABLED=true`, falling back to the playbook on any failure or ungrounded output). Plans are proposals; only the approve endpoint commits.
+- MCP server (stdio, demo uid from `MCP_UID`): `python -m app.mcp_server.server`.
+- Question banks: `question_bank/<subject>/*.yaml` (858 questions across 283 lesson banks); tests: `python -m pytest` (uses embedded FalkorDB on 3.12+, otherwise Docker FalkorDB on localhost:6379).
+
+## Tutor (GraphRAG Q&A)
+
+- `/tutor`: ask a question in the selected subject; answers come only from the lesson text (boilerplate template chunks are dropped at load; chunks linked to subtopics via `HAS_CHUNK`), retrieved with BM25, optionally fused with embeddings (`EMBEDDING_MODEL=gemini/text-embedding-004 python -m app.rag.embed`), then expanded over the prerequisite graph.
+- Personalized: level comes from quiz mastery on the topic, else from onboarding; prerequisites you have not mastered are flagged with quiz links. Self-reported known topics are provisional until a quiz confirms them.
+- With `AI_ENABLED=true` an LLM writes the answer from the retrieved passages and must cite `[n]`; otherwise, or if it cites anything else, the app shows extractive lesson text with sources. Off-corpus questions are declined, not guessed.
+
+## Subjects and data quality
+
+Every node carries a `subject` property (the folder name) and ids are globally unique (`math-…`, `physics-…`). The UI, agent (`AgentRequest.subject`), MCP server (`MCP_SUBJECT`) and tutor are subject-scoped; no edges cross subjects.
+
+Mathematics retains its 84 lessons and 92 authored prerequisite links. The other eight subjects now have 266 concept-sized lessons and 302 authored prerequisite links, plus a quiz bank for every lesson. Lessons use the supplied topic scopes, topic-specific explanations, and subject-specific worked-study guidance; the seed questions check scope knowledge and sound subject methods. Their breadth and depth still vary by topic and should be reviewed before use as a formal course. Curriculum files are fingerprinted at startup, so edits trigger an idempotent refresh of that subject's graph nodes, edges, and lesson chunks. Repeated boilerplate chunks are not indexed.

@@ -1,0 +1,50 @@
+subtopic_id: physics-modern-physics-nuclear-structure
+questions:
+- id: nuclear-structure-mechanisms-and-methods-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Modern Physics and this
+    lesson?
+  options:
+  - nuclear structure
+  - access control list
+  - DNA replication
+  - transaction isolation
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept nuclear structure in the unit.
+  explanation: nuclear structure is one of the named concepts in this unit. Use its
+    definition and relationships in context, rather than treating the name alone as
+    understanding.
+- id: nuclear-structure-mechanisms-and-methods-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Modern Physics and this
+    lesson?
+  options:
+  - radioactivity
+  - access control list
+  - DNA replication
+  - transaction isolation
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept radioactivity in the unit.
+  explanation: radioactivity is one of the named concepts in this unit. Use its definition
+    and relationships in context, rather than treating the name alone as understanding.
+- id: nuclear-structure-mechanisms-and-methods-reasoning
+  level: 3
+  stem: Which check best supports a physical model's prediction?
+  options:
+  - Check dimensions and limiting cases, then compare with measurement and uncertainty.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Check dimensions and limiting cases, then compare with measurement
+    and uncertainty. Draw the system and choose coordinates and sign conventions.
+    State approximations, derive the relation before inserting values, preserve units,
+    and check limiting cases or conservation laws.

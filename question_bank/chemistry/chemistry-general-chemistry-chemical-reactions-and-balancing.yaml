@@ -1,0 +1,51 @@
+subtopic_id: chemistry-general-chemistry-chemical-reactions-and-balancing
+questions:
+- id: chemical-reactions-and-balancing-mechanisms-and-methods-1
+  level: 1
+  stem: Which item is explicitly included in the scope of General Chemistry and this
+    lesson?
+  options:
+  - chemical reactions and balancing
+  - OAuth token rotation
+  - backpropagation
+  - population bottleneck
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept chemical reactions and balancing in the unit.
+  explanation: chemical reactions and balancing is one of the named concepts in this
+    unit. Use its definition and relationships in context, rather than treating the
+    name alone as understanding.
+- id: chemical-reactions-and-balancing-mechanisms-and-methods-2
+  level: 2
+  stem: Which item is explicitly included in the scope of General Chemistry and this
+    lesson?
+  options:
+  - gas laws
+  - OAuth token rotation
+  - backpropagation
+  - population bottleneck
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept gas laws in the unit.
+  explanation: gas laws is one of the named concepts in this unit. Use its definition
+    and relationships in context, rather than treating the name alone as understanding.
+- id: chemical-reactions-and-balancing-mechanisms-and-methods-reasoning
+  level: 3
+  stem: Which check best supports a chemical calculation?
+  options:
+  - Check atom and charge balance, units, conditions, and agreement with the chemical
+    model.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Check atom and charge balance, units, conditions, and agreement with
+    the chemical model. Write a balanced equation or particle-level model first. Track
+    atoms, charge, units, and conditions; show the calculation; then check whether
+    the magnitude and direction agree with the chemical model.

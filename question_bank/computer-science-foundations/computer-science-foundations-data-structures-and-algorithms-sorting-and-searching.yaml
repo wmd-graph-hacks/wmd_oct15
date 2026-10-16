@@ -1,0 +1,51 @@
+subtopic_id: computer-science-foundations-data-structures-and-algorithms-sorting-and-searching
+questions:
+- id: sorting-and-searching-applications-and-analysis-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Data Structures and Algorithms
+    and this lesson?
+  options:
+  - sorting and searching
+  - antigen presentation
+  - titration curve
+  - wave-particle duality
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept sorting and searching in the unit.
+  explanation: sorting and searching is one of the named concepts in this unit. Use
+    its definition and relationships in context, rather than treating the name alone
+    as understanding.
+- id: sorting-and-searching-applications-and-analysis-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Data Structures and Algorithms
+    and this lesson?
+  options:
+  - dynamic programming
+  - antigen presentation
+  - titration curve
+  - wave-particle duality
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept dynamic programming in the unit.
+  explanation: dynamic programming is one of the named concepts in this unit. Use
+    its definition and relationships in context, rather than treating the name alone
+    as understanding.
+- id: sorting-and-searching-applications-and-analysis-reasoning
+  level: 3
+  stem: Which check best supports an algorithm's correctness?
+  options:
+  - Trace edge cases and verify invariants as well as time and space behavior.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Trace edge cases and verify invariants as well as time and space behavior.
+    Trace a small input by hand, state the invariant that should remain true, and
+    account for time, space, and edge cases. Use a test case that distinguishes the
+    intended behavior from a plausible bug.

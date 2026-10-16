@@ -1,0 +1,23 @@
+subtopic_id: math-single-variable-calculus-mean-value-theorem
+questions:
+- id: mvt-1
+  level: 1
+  stem: "The Mean Value Theorem guarantees, for f continuous on [a,b] and differentiable on (a,b), a point c with:"
+  options: ["f(c)=0", "f′(c)=(f(b)−f(a))/(b−a)", "f″(c)=0", "f(c)=(f(a)+f(b))/2"]
+  answer: 1
+  hints: ["It relates a tangent slope to a secant slope."]
+  explanation: "There is c in (a,b) where the tangent slope equals the average slope."
+- id: mvt-2
+  level: 2
+  stem: "If f′(x) = 0 for all x in an interval, then f is:"
+  options: ["linear with positive slope", "constant", "periodic", "zero"]
+  answer: 1
+  hints: ["Apply the MVT to any two points."]
+  explanation: "MVT gives f(b)−f(a)=f′(c)(b−a)=0, so f is constant."
+- id: mvt-3
+  level: 3
+  stem: "Which hypothesis of the MVT fails for f(x)=|x| on [−1,1]?"
+  options: ["Continuity on [−1,1]", "Differentiability on (−1,1)", "Both", "Neither"]
+  answer: 1
+  hints: ["Check the corner at 0."]
+  explanation: "|x| is continuous but not differentiable at 0, so MVT does not apply."

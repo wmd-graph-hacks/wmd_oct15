@@ -1,0 +1,23 @@
+subtopic_id: math-optimization-convex-sets-and-functions
+questions:
+- id: cvx-1
+  level: 1
+  stem: "A set C is convex if for all x, y in C and t in [0,1]:"
+  options: ["tx + (1−t)y is in C", "x + y is in C", "x·y is in C", "|x − y| ≤ 1"]
+  answer: 0
+  hints: ["The segment between any two points stays inside."]
+  explanation: "Convexity is closure under convex combinations."
+- id: cvx-2
+  level: 2
+  stem: "Which function is convex on ℝ?"
+  options: ["−x²", "x³", "eˣ", "sin x"]
+  answer: 2
+  hints: ["Check the second derivative is nonnegative."]
+  explanation: "(eˣ)″ = eˣ > 0."
+- id: cvx-3
+  level: 3
+  stem: "For a convex differentiable f, a point x* with ∇f(x*)=0 is:"
+  options: ["a local min only", "a global minimum", "a saddle point", "a maximum"]
+  answer: 1
+  hints: ["Use the first-order characterization f(y) ≥ f(x)+∇f(x)ᵀ(y−x)."]
+  explanation: "Convexity gives f(y) ≥ f(x*) for all y."

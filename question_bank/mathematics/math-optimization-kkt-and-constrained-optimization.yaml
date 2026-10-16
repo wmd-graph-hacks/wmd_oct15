@@ -1,0 +1,23 @@
+subtopic_id: math-optimization-kkt-and-constrained-optimization
+questions:
+- id: kkt-1
+  level: 1
+  stem: "In the KKT conditions for min f(x) s.t. g(x) ≤ 0, dual feasibility requires:"
+  options: ["λ ≥ 0", "λ ≤ 0", "λ = 1", "λ is unrestricted"]
+  answer: 0
+  hints: ["Multipliers of inequality constraints have a fixed sign in the g ≤ 0 convention."]
+  explanation: "Inequality multipliers satisfy λ ≥ 0."
+- id: kkt-2
+  level: 2
+  stem: "Complementary slackness says:"
+  options: ["λ g(x) = 0", "λ + g(x) = 0", "∇f = 0", "g(x) = 1"]
+  answer: 0
+  hints: ["Either the constraint is active or its multiplier is zero."]
+  explanation: "λᵢ gᵢ(x*) = 0 for every inequality constraint."
+- id: kkt-3
+  level: 3
+  stem: "Minimize x² subject to x ≥ 1. The optimal multiplier (for g(x)=1−x ≤ 0) is:"
+  options: ["0", "1", "2", "−2"]
+  answer: 2
+  hints: ["Stationarity: 2x − λ = 0.", "The constraint is active at x = 1."]
+  explanation: "x* = 1, so λ = 2x* = 2."

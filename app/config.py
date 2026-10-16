@@ -39,6 +39,10 @@ class Settings:
     ai_fallback_models: tuple[str, ...] = _fallback_models()
     ai_timeout_seconds: float = float(os.getenv("AI_TIMEOUT_SECONDS", str(_LLM_CONFIG.get("timeout_seconds", 8))))
     ai_max_tokens: int = int(os.getenv("AI_MAX_TOKENS", str(_LLM_CONFIG.get("max_tokens", 200))))
+    agent_max_tokens: int = int(_LLM_CONFIG.get("agent", {}).get("max_tokens", 1200))
+    tutor_max_tokens: int = int(_LLM_CONFIG.get("tutor", {}).get("max_tokens", 600))
+    agent_max_tool_calls: int = int(_LLM_CONFIG.get("agent", {}).get("max_tool_calls", 8))
+    agent_timeout_seconds: float = float(_LLM_CONFIG.get("agent", {}).get("timeout_seconds", 40))
     ai_cache_size: int = int(os.getenv("AI_CACHE_SIZE", str(_LLM_CONFIG.get("cache_size", 256))))
 
 

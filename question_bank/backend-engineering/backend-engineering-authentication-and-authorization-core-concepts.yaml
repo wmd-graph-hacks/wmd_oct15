@@ -1,0 +1,51 @@
+subtopic_id: backend-engineering-authentication-and-authorization-core-concepts
+questions:
+- id: sessions-and-cookies-foundations-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Authentication and Authorization
+    and this lesson?
+  options:
+  - Sessions and cookies
+  - Hardy-Weinberg equilibrium
+  - orbital angular momentum
+  - electrochemical potential
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept Sessions and cookies in the unit.
+  explanation: Sessions and cookies is one of the named concepts in this unit. Use
+    its definition and relationships in context, rather than treating the name alone
+    as understanding.
+- id: sessions-and-cookies-foundations-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Authentication and Authorization
+    and this lesson?
+  options:
+  - password hashing (bcrypt, Argon2)
+  - Hardy-Weinberg equilibrium
+  - orbital angular momentum
+  - electrochemical potential
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept password hashing (bcrypt, Argon2) in the unit.
+  explanation: password hashing (bcrypt, Argon2) is one of the named concepts in this
+    unit. Use its definition and relationships in context, rather than treating the
+    name alone as understanding.
+- id: sessions-and-cookies-foundations-reasoning
+  level: 3
+  stem: Which check best supports a claim that a service change is safe?
+  options:
+  - Test contracts on success and failure paths, including retries and state changes.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Test contracts on success and failure paths, including retries and
+    state changes. Trace one request from caller to storage and back. Mark trust boundaries,
+    state changes, failure points, and retry behavior; then test the contract at both
+    normal and partial-failure cases.

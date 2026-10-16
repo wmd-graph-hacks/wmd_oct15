@@ -1,0 +1,23 @@
+subtopic_id: math-single-variable-calculus-riemann-integral-and-ftc
+questions:
+- id: ftc-1
+  level: 1
+  stem: "What is ∫₀¹ 2x dx?"
+  options: ["0", "1", "2", "1/2"]
+  answer: 1
+  hints: ["Find an antiderivative: x²."]
+  explanation: "[x²]₀¹ = 1."
+- id: ftc-2
+  level: 2
+  stem: "If F(x)=∫₀ˣ cos(t²) dt, then F′(x)="
+  options: ["sin(x²)", "cos(x²)", "2x cos(x²)", "−sin(x²)"]
+  answer: 1
+  hints: ["Use the first form of the Fundamental Theorem of Calculus."]
+  explanation: "F′(x)=cos(x²) by FTC part 1."
+- id: ftc-3
+  level: 3
+  stem: "The FTC part 2 states ∫ₐᵇ f(x) dx = F(b) − F(a) where F is:"
+  options: ["any antiderivative of f", "the derivative of f", "the average of f", "f evaluated at the midpoint"]
+  answer: 0
+  hints: ["f must be continuous on [a,b]."]
+  explanation: "Any antiderivative F with F′=f works."

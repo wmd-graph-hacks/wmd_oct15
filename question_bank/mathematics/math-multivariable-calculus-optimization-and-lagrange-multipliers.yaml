@@ -1,0 +1,23 @@
+subtopic_id: math-multivariable-calculus-optimization-and-lagrange-multipliers
+questions:
+- id: lag-1
+  level: 1
+  stem: "At a constrained extremum of f on g(x)=c, the gradients ∇f and ∇g are:"
+  options: ["parallel", "orthogonal", "equal", "both zero"]
+  answer: 0
+  hints: ["Think of level curves touching."]
+  explanation: "∇f = λ∇g at a regular constrained extremum."
+- id: lag-2
+  level: 2
+  stem: "Maximize xy subject to x + y = 2. The maximum value is:"
+  options: ["1", "2", "0", "4"]
+  answer: 0
+  hints: ["Lagrange: y = λ, x = λ."]
+  explanation: "x = y = 1, so xy = 1."
+- id: lag-3
+  level: 3
+  stem: "Critical points of f(x,y) are classified using the Hessian: if det H > 0 and f_xx > 0 the point is a:"
+  options: ["local minimum", "local maximum", "saddle point", "inconclusive"]
+  answer: 0
+  hints: ["Positive definite Hessian."]
+  explanation: "det H > 0 with f_xx > 0 means H is positive definite."
