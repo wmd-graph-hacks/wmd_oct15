@@ -1,0 +1,23 @@
+subtopic_id: math-linear-algebra-inner-products-and-orthogonality
+questions:
+- id: ip-1
+  level: 1
+  stem: "Vectors u and v are orthogonal iff:"
+  options: ["u·v = 1", "u·v = 0", "|u| = |v|", "u = v"]
+  answer: 1
+  hints: ["Think of perpendicular vectors."]
+  explanation: "Orthogonal means zero inner product."
+- id: ip-2
+  level: 2
+  stem: "The Cauchy–Schwarz inequality states:"
+  options: ["|u·v| ≤ |u||v|", "|u+v| = |u|+|v|", "u·v ≥ 0", "|u·v| ≥ |u||v|"]
+  answer: 0
+  hints: ["u·v = |u||v|cosθ."]
+  explanation: "Since |cosθ| ≤ 1."
+- id: ip-3
+  level: 3
+  stem: "The projection of v onto a unit vector u is:"
+  options: ["(v·u) u", "(v·u) v", "v − u", "(u·u) v"]
+  answer: 0
+  hints: ["The scalar is the component of v along u."]
+  explanation: "proj_u v = (v·u)u for |u|=1."

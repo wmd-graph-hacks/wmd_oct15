@@ -1,0 +1,51 @@
+subtopic_id: artificial-intelligence-and-machine-learning-learning-theory-bias-variance-decomposition
+questions:
+- id: bias-variance-decomposition-mechanisms-and-methods-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Learning Theory and this
+    lesson?
+  options:
+  - bias-variance decomposition
+  - membrane transport
+  - Kubernetes scheduling
+  - chemical equilibrium
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept bias-variance decomposition in the unit.
+  explanation: bias-variance decomposition is one of the named concepts in this unit.
+    Use its definition and relationships in context, rather than treating the name
+    alone as understanding.
+- id: bias-variance-decomposition-mechanisms-and-methods-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Learning Theory and this
+    lesson?
+  options:
+  - double descent
+  - membrane transport
+  - Kubernetes scheduling
+  - chemical equilibrium
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept double descent in the unit.
+  explanation: double descent is one of the named concepts in this unit. Use its definition
+    and relationships in context, rather than treating the name alone as understanding.
+- id: bias-variance-decomposition-mechanisms-and-methods-reasoning
+  level: 3
+  stem: Which evidence best supports a claim that a model will generalize?
+  options:
+  - Evaluate a representative held-out set, compare to a baseline, and inspect relevant
+    error groups.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Evaluate a representative held-out set, compare to a baseline, and
+    inspect relevant error groups. Separate training, validation, and test evidence;
+    compare against a simple baseline; inspect errors by subgroup; and state what
+    distribution the result is expected to generalize to.

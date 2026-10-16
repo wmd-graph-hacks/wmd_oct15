@@ -1,0 +1,51 @@
+subtopic_id: backend-engineering-software-architecture-core-concepts
+questions:
+- id: monolith-vs-microservices-foundations-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Software Architecture and
+    this lesson?
+  options:
+  - Monolith vs. microservices
+  - Hardy-Weinberg equilibrium
+  - orbital angular momentum
+  - electrochemical potential
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept Monolith vs. microservices in the unit.
+  explanation: Monolith vs. microservices is one of the named concepts in this unit.
+    Use its definition and relationships in context, rather than treating the name
+    alone as understanding.
+- id: monolith-vs-microservices-foundations-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Software Architecture and
+    this lesson?
+  options:
+  - modular monoliths
+  - Hardy-Weinberg equilibrium
+  - orbital angular momentum
+  - electrochemical potential
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept modular monoliths in the unit.
+  explanation: modular monoliths is one of the named concepts in this unit. Use its
+    definition and relationships in context, rather than treating the name alone as
+    understanding.
+- id: monolith-vs-microservices-foundations-reasoning
+  level: 3
+  stem: Which check best supports a claim that a service change is safe?
+  options:
+  - Test contracts on success and failure paths, including retries and state changes.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Test contracts on success and failure paths, including retries and
+    state changes. Trace one request from caller to storage and back. Mark trust boundaries,
+    state changes, failure points, and retry behavior; then test the contract at both
+    normal and partial-failure cases.

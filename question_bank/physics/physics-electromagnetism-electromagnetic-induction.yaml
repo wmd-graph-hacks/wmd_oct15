@@ -1,0 +1,50 @@
+subtopic_id: physics-electromagnetism-electromagnetic-induction
+questions:
+- id: electromagnetic-induction-applications-and-analysis-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Electromagnetism and this
+    lesson?
+  options:
+  - electromagnetic induction (Faraday’s law)
+  - access control list
+  - DNA replication
+  - transaction isolation
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept electromagnetic induction (Faraday’s law) in the unit.
+  explanation: electromagnetic induction (Faraday’s law) is one of the named concepts
+    in this unit. Use its definition and relationships in context, rather than treating
+    the name alone as understanding.
+- id: electromagnetic-induction-applications-and-analysis-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Electromagnetism and this
+    lesson?
+  options:
+  - inductance
+  - access control list
+  - DNA replication
+  - transaction isolation
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept inductance in the unit.
+  explanation: inductance is one of the named concepts in this unit. Use its definition
+    and relationships in context, rather than treating the name alone as understanding.
+- id: electromagnetic-induction-applications-and-analysis-reasoning
+  level: 3
+  stem: Which check best supports a physical model's prediction?
+  options:
+  - Check dimensions and limiting cases, then compare with measurement and uncertainty.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Check dimensions and limiting cases, then compare with measurement
+    and uncertainty. Draw the system and choose coordinates and sign conventions.
+    State approximations, derive the relation before inserting values, preserve units,
+    and check limiting cases or conservation laws.

@@ -1,0 +1,23 @@
+subtopic_id: math-linear-algebra-spectral-theorem-and-quadratic-forms
+questions:
+- id: sp-1
+  level: 1
+  stem: "A real symmetric matrix always has:"
+  options: ["complex eigenvalues only", "real eigenvalues", "zero determinant", "repeated eigenvalues"]
+  answer: 1
+  hints: ["This is part of the spectral theorem."]
+  explanation: "Real symmetric matrices are orthogonally diagonalizable with real eigenvalues."
+- id: sp-2
+  level: 2
+  stem: "The quadratic form xᵀAx with A symmetric is positive definite iff:"
+  options: ["all eigenvalues of A are positive", "trace(A) > 0", "det(A) = 1", "A has a zero eigenvalue"]
+  answer: 0
+  hints: ["Diagonalize in an orthonormal eigenbasis."]
+  explanation: "xᵀAx = Σλᵢ yᵢ² > 0 for all y ≠ 0 iff every λᵢ > 0."
+- id: sp-3
+  level: 3
+  stem: "Eigenvectors of a symmetric matrix belonging to distinct eigenvalues are:"
+  options: ["parallel", "orthogonal", "equal", "linearly dependent"]
+  answer: 1
+  hints: ["Compute λ(u·v) two ways."]
+  explanation: "λ₁ u·v = Au·v = u·Av = λ₂ u·v, so u·v=0."

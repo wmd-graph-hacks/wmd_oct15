@@ -1,0 +1,23 @@
+subtopic_id: math-optimization-linear-programming-simplex-duality
+questions:
+- id: lp-1
+  level: 1
+  stem: "An optimal solution of a bounded feasible LP (if one exists) can always be found at:"
+  options: ["a vertex of the feasible region", "the centroid of the region", "the origin", "an interior point only"]
+  answer: 0
+  hints: ["The objective is linear."]
+  explanation: "A linear function attains its optimum at an extreme point."
+- id: lp-2
+  level: 2
+  stem: "Weak duality states that for a max primal and min dual, any feasible primal value is:"
+  options: ["≥ any feasible dual value", "≤ any feasible dual value", "= the dual value", "unrelated"]
+  answer: 1
+  hints: ["The dual provides upper bounds on a maximization."]
+  explanation: "Primal objective ≤ dual objective for feasible pairs."
+- id: lp-3
+  level: 3
+  stem: "Strong duality implies that at optimality:"
+  options: ["primal and dual optimal values are equal", "the dual is infeasible", "the simplex method cycles", "all slacks are zero"]
+  answer: 0
+  hints: ["Both optima exist when either does."]
+  explanation: "If either problem has a finite optimum, both do and the values coincide."

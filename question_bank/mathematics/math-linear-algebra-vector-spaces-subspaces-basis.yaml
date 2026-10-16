@@ -1,0 +1,23 @@
+subtopic_id: math-linear-algebra-vector-spaces-subspaces-basis
+questions:
+- id: vs-1
+  level: 1
+  stem: "What is the dimension of ℝ³?"
+  options: ["1", "2", "3", "infinite"]
+  answer: 2
+  hints: ["Count the vectors in a basis such as e1, e2, e3."]
+  explanation: "The standard basis has 3 vectors."
+- id: vs-2
+  level: 2
+  stem: "Which subset of ℝ² is a subspace?"
+  options: ["{(x,y): x+y=1}", "{(x,y): x=y}", "{(x,y): x≥0}", "{(x,y): xy=0}"]
+  answer: 1
+  hints: ["A subspace must contain 0 and be closed under addition and scaling."]
+  explanation: "{x=y} is a line through the origin; the others fail closure or contain no 0."
+- id: vs-3
+  level: 3
+  stem: "A set of 4 vectors in ℝ³ is always:"
+  options: ["linearly independent", "linearly dependent", "a basis", "orthogonal"]
+  answer: 1
+  hints: ["Compare the size of the set with the dimension."]
+  explanation: "More vectors than the dimension forces dependence."

@@ -1,0 +1,51 @@
+subtopic_id: cybersecurity-application-security-core-concepts
+questions:
+- id: owasp-top-10-vulnerabilities-foundations-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Application Security and
+    this lesson?
+  options:
+  - OWASP Top 10 vulnerabilities
+  - calorimetry
+  - PCR amplification
+  - Jordan normal form
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept OWASP Top 10 vulnerabilities in the unit.
+  explanation: OWASP Top 10 vulnerabilities is one of the named concepts in this unit.
+    Use its definition and relationships in context, rather than treating the name
+    alone as understanding.
+- id: owasp-top-10-vulnerabilities-foundations-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Application Security and
+    this lesson?
+  options:
+  - SQL injection
+  - calorimetry
+  - PCR amplification
+  - Jordan normal form
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept SQL injection in the unit.
+  explanation: SQL injection is one of the named concepts in this unit. Use its definition
+    and relationships in context, rather than treating the name alone as understanding.
+- id: owasp-top-10-vulnerabilities-foundations-reasoning
+  level: 3
+  stem: Which evidence best supports a security control claim?
+  options:
+  - Use an approved bounded test and preserve evidence tied to the stated threat and
+    asset.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Use an approved bounded test and preserve evidence tied to the stated
+    threat and asset. Start from an explicit asset, threat, and trust boundary. Analyze
+    the least-privilege defensive control and its evidence. Practical exercises must
+    remain in an isolated environment with explicit authorization and scope.

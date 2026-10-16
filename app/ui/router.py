@@ -57,18 +57,11 @@ def logout():
     return response
 
 
-@router.get("/", response_class=HTMLResponse)
+@router.get("/")
 def home(request: Request):
-    user = current_user(request)
-    repository.seed_course()
-    repository.ensure_learner(user["uid"], user.get("name", "Learner"))
-    course = repository.get_course()
-    try:
-        recommendations = repository.plan(user["uid"])
-    except Exception:
-        recommendations = []
-    attempts = repository.latest_attempts(user["uid"])
-    return templates.TemplateResponse(request, "home.html", {"user": user, "course": course, "recommendations": recommendations, "attempts": attempts, "preferences": repository.learner_preferences(user["uid"]), "today": date.today().isoformat()})
+    """The study agent is the home page; the earlier 12-topic demo page is retired."""
+    current_user(request)
+    return RedirectResponse("/agent", status_code=303)
 
 
 @router.post("/plans")

@@ -1,0 +1,33 @@
+---
+id: physics-course
+type: course
+title: Physics
+level: foundation-to-advanced
+language: en
+status: authored-learning-map
+---
+
+# Physics: course map
+
+This catalog turns the supplied subject outline into a staged learning pathway. Topic pages state scope and outcomes; linked lesson pages provide instructional notes and retrieval practice. The pathway ranges from introductory to advanced study. Use the syllabus to choose a suitable stage and follow prerequisite links.
+
+For a staged sequence, pacing, lesson cycle, and assessment guidance, see the [syllabus](./syllabus.md).
+
+## Topic index
+
+- [Classical Mechanics](./classical-mechanics/README.md) — Newton’s laws, work-energy theorem, conservation of momentum and energy, angular momentum, central force motion, Kepler problem, rigid body dynamics (inertia te…
+- [Electromagnetism](./electromagnetism/README.md) — Coulomb’s law, electric fields and Gauss’s law, electric potential, conductors and capacitors, dielectrics, magnetostatics, Biot-Savart law, Ampère’s law, elect…
+- [Thermodynamics](./thermodynamics/README.md) — Zeroth, first, second, and third laws, heat engines and refrigerators, Carnot cycle, entropy, thermodynamic potentials (internal energy, enthalpy, Helmholtz, Gi…
+- [Statistical Mechanics](./statistical-mechanics/README.md) — Microstates and macrostates, ensembles (microcanonical, canonical, grand canonical), partition functions, Boltzmann distribution, Maxwell-Boltzmann distribution…
+- [Quantum Mechanics](./quantum-mechanics/README.md) — Wave-particle duality, Schrödinger equation (time-dependent and time-independent), wave functions and probability interpretation, operators and observables, com…
+- [Special Relativity](./special-relativity/README.md) — Postulates, Lorentz transformations, time dilation and length contraction, relativistic velocity addition, spacetime intervals, four-vectors, relativistic energ…
+- [General Relativity (Advanced or Optional)](./general-relativity-advanced-or-optional/README.md) — Equivalence principle, curved spacetime, metric tensor, geodesics, Riemann curvature tensor, Einstein field equations, Schwarzschild solution, gravitational wav…
+- [Optics and Waves](./optics-and-waves/README.md) — Wave equation, superposition, interference (Young’s double slit, thin films), diffraction (single and multiple slit, gratings), polarization, Fresnel and Fraunh…
+- [Modern Physics](./modern-physics/README.md) — Photoelectric effect, Compton scattering, Bohr model, atomic spectra, nuclear structure, radioactivity, nuclear reactions, particle physics overview (Standard M…
+- [Mathematical Methods for Physics](./mathematical-methods-for-physics/README.md) — Vector calculus, tensors (intro), Fourier analysis, special functions (Bessel, Legendre, Hermite), Green’s functions, complex methods, group theory (intro)
+- [Condensed Matter and Solid-State Physics (Advanced)](./condensed-matter-and-solid-state-physics-advanced/README.md) — Crystal lattices, Bravais lattices, reciprocal lattice, Bloch theorem, band theory, semiconductors, superconductivity (BCS theory intro), magnetism
+- [Experimental Physics and Data Analysis](./experimental-physics-and-data-analysis/README.md) — Measurement and uncertainty, error propagation, significance, least-squares fitting, lab instrumentation, oscilloscopes, signal processing basics, scientific co…
+
+## Resource graph
+
+The subject root is a `course`; each folder below is a `topic`; each topic's linked lesson pages are graph-linked `subtopic` teaching resources. Use `CONTAINS` from course to topic and topic to subtopic. The lesson metadata records prerequisite IDs. Keep learner assessment evidence separate from curriculum facts.

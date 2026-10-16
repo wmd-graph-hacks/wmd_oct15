@@ -1,0 +1,23 @@
+subtopic_id: math-linear-algebra-linear-maps-and-rank-nullity
+questions:
+- id: rn-1
+  level: 1
+  stem: "For T: V→W linear, dim V = rank(T) + ?"
+  options: ["dim W", "nullity(T)", "0", "dim(range T)²"]
+  answer: 1
+  hints: ["This is the rank-nullity theorem."]
+  explanation: "dim V = rank + nullity."
+- id: rn-2
+  level: 2
+  stem: "A 3×5 matrix has rank 2. What is the dimension of its null space?"
+  options: ["1", "2", "3", "5"]
+  answer: 2
+  hints: ["Null space lives in the 5-dimensional domain.", "5 − rank."]
+  explanation: "nullity = 5 − 2 = 3."
+- id: rn-3
+  level: 3
+  stem: "A linear map T: ℝ⁴→ℝ³ can be injective only if:"
+  options: ["it is onto", "never; injective needs dim domain ≤ dim codomain", "its rank is 3", "its nullity is 1"]
+  answer: 1
+  hints: ["Injective means nullity 0, so rank = 4."]
+  explanation: "rank ≤ 3 < 4, so nullity ≥ 1 and T cannot be injective."

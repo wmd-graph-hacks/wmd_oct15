@@ -1,0 +1,23 @@
+subtopic_id: math-foundations-of-mathematics-proof-techniques
+questions:
+- id: proof-1
+  level: 1
+  stem: "To prove 'if n² is even then n is even' by contrapositive, you assume:"
+  options: ["n is even and show n² is even", "n is odd and show n² is odd", "n² is odd and show n is even", "n² is even and show n is odd"]
+  answer: 1
+  hints: ["The contrapositive of P → Q is ¬Q → ¬P.", "¬(n even) means n is odd."]
+  explanation: "Contrapositive: n odd ⇒ n² odd."
+- id: proof-2
+  level: 2
+  stem: "In a proof by contradiction that √2 is irrational, the initial assumption is:"
+  options: ["√2 is rational, √2 = p/q in lowest terms", "√2 is an integer", "p and q are both odd", "√2 < 2"]
+  answer: 0
+  hints: ["Assume the opposite of the claim.", "Lowest terms is what lets you derive the contradiction."]
+  explanation: "Assuming √2 = p/q in lowest terms leads to both p and q even, a contradiction."
+- id: proof-3
+  level: 3
+  stem: "Which is a valid way to disprove 'every continuous function is differentiable'?"
+  options: ["Exhibit f(x)=x²", "Exhibit f(x)=|x| at x=0", "Prove it for polynomials", "Show it holds on [0,1]"]
+  answer: 1
+  hints: ["A universal claim needs just one counterexample.", "Look for a corner."]
+  explanation: "|x| is continuous but not differentiable at 0, a counterexample."

@@ -16,10 +16,15 @@ dependencies = [
   "python-dotenv>=1.0,<2",
   "falkordb>=1.0,<2",
   "firebase-admin>=6.5,<8",
+  "pyyaml>=6,<7",
+  "pydantic>=2,<3",
+  "mcp>=2,<3",
 ]
 
 [project.optional-dependencies]
 llm = ["litellm>=1.50,<2"]
+dev = ["pytest>=8"]
+embedded = ["falkordblite; python_version >= '3.12'"]
 
 [tool.setuptools.packages.find]
 include = ["app*"]

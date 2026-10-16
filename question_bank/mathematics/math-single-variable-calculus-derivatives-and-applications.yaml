@@ -1,0 +1,23 @@
+subtopic_id: math-single-variable-calculus-derivatives-and-applications
+questions:
+- id: der-1
+  level: 1
+  stem: "What is d/dx of x³?"
+  options: ["x²", "3x²", "3x³", "x⁴/4"]
+  answer: 1
+  hints: ["Use the power rule: bring down the exponent."]
+  explanation: "d/dx xⁿ = n xⁿ⁻¹."
+- id: der-2
+  level: 2
+  stem: "What is d/dx of sin(x²)?"
+  options: ["cos(x²)", "2x cos(x²)", "2x sin(x²)", "−2x cos(x²)"]
+  answer: 1
+  hints: ["Apply the chain rule.", "Outer derivative is cos, inner is x²."]
+  explanation: "Chain rule: cos(x²)·2x."
+- id: der-3
+  level: 3
+  stem: "f(x)=x³−3x has a local minimum at:"
+  options: ["x = −1", "x = 0", "x = 1", "x = 3"]
+  answer: 2
+  hints: ["Set f′(x)=0.", "Use the sign of f″ to classify."]
+  explanation: "f′=3x²−3=0 gives x=±1; f″(1)=6>0 so x=1 is a minimum."

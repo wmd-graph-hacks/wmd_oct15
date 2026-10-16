@@ -1,0 +1,23 @@
+subtopic_id: math-linear-algebra-eigenvalues-diagonalization-jordan-form
+questions:
+- id: eig-1
+  level: 1
+  stem: "λ is an eigenvalue of A if there is a nonzero v with:"
+  options: ["Av = v", "Av = λv", "Av = 0", "A = λI"]
+  answer: 1
+  hints: ["The vector keeps its direction."]
+  explanation: "Definition: Av = λv, v ≠ 0."
+- id: eig-2
+  level: 2
+  stem: "The eigenvalues of [[2,0],[0,5]] are:"
+  options: ["2 and 5", "0 and 7", "10 only", "2 and 0"]
+  answer: 0
+  hints: ["For a diagonal matrix, read the diagonal."]
+  explanation: "det(A−λI)=(2−λ)(5−λ)."
+- id: eig-3
+  level: 3
+  stem: "The sum of the eigenvalues of a square matrix (with multiplicity) equals:"
+  options: ["its determinant", "its trace", "its rank", "its largest entry"]
+  answer: 1
+  hints: ["Consider the characteristic polynomial coefficients."]
+  explanation: "trace(A)=Σλᵢ; det(A)=Πλᵢ."

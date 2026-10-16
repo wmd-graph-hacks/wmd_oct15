@@ -1,0 +1,51 @@
+subtopic_id: artificial-intelligence-and-machine-learning-neural-networks-and-deep-learning-core-concepts
+questions:
+- id: perceptron-foundations-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Neural Networks and Deep
+    Learning and this lesson?
+  options:
+  - Perceptron
+  - membrane transport
+  - Kubernetes scheduling
+  - chemical equilibrium
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept Perceptron in the unit.
+  explanation: Perceptron is one of the named concepts in this unit. Use its definition
+    and relationships in context, rather than treating the name alone as understanding.
+- id: perceptron-foundations-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Neural Networks and Deep
+    Learning and this lesson?
+  options:
+  - multilayer perceptrons
+  - membrane transport
+  - Kubernetes scheduling
+  - chemical equilibrium
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept multilayer perceptrons in the unit.
+  explanation: multilayer perceptrons is one of the named concepts in this unit. Use
+    its definition and relationships in context, rather than treating the name alone
+    as understanding.
+- id: perceptron-foundations-reasoning
+  level: 3
+  stem: Which evidence best supports a claim that a model will generalize?
+  options:
+  - Evaluate a representative held-out set, compare to a baseline, and inspect relevant
+    error groups.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Evaluate a representative held-out set, compare to a baseline, and
+    inspect relevant error groups. Separate training, validation, and test evidence;
+    compare against a simple baseline; inspect errors by subgroup; and state what
+    distribution the result is expected to generalize to.

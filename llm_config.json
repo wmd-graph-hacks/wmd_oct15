@@ -6,5 +6,13 @@
   ],
   "timeout_seconds": 20,
   "max_tokens": 200,
-  "cache_size": 256
+  "cache_size": 256,
+  "agent": {
+    "max_tokens": 1200,
+    "max_tool_calls": 8,
+    "timeout_seconds": 40
+  },
+  "tutor": {
+    "max_tokens": 600
+  }
 }

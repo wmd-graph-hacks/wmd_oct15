@@ -1,0 +1,52 @@
+subtopic_id: devops-and-cloud-backup-disaster-recovery-and-high-availability-core-concepts
+questions:
+- id: backup-strategies-foundations-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Backup, Disaster Recovery,
+    and High Availability and this lesson?
+  options:
+  - Backup strategies (full, incremental, differential)
+  - Pauli exclusion principle
+  - Mendelian segregation
+  - Michaelis-Menten kinetics
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept Backup strategies (full, incremental, differential) in the
+    unit.
+  explanation: Backup strategies (full, incremental, differential) is one of the named
+    concepts in this unit. Use its definition and relationships in context, rather
+    than treating the name alone as understanding.
+- id: backup-strategies-foundations-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Backup, Disaster Recovery,
+    and High Availability and this lesson?
+  options:
+  - snapshot management
+  - Pauli exclusion principle
+  - Mendelian segregation
+  - Michaelis-Menten kinetics
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept snapshot management in the unit.
+  explanation: snapshot management is one of the named concepts in this unit. Use
+    its definition and relationships in context, rather than treating the name alone
+    as understanding.
+- id: backup-strategies-foundations-reasoning
+  level: 3
+  stem: Which evidence best supports a safe infrastructure change?
+  options:
+  - Review the plan, stage the change, monitor health, and verify rollback or recovery.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Review the plan, stage the change, monitor health, and verify rollback
+    or recovery. Trace a change from source through deployment to runtime signals.
+    Make the desired state, access boundaries, failure signal, rollback path, and
+    recovery objective explicit before changing a system.

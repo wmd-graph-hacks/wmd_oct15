@@ -1,0 +1,49 @@
+subtopic_id: backend-engineering-databases-locking-nosql-document-stores
+questions:
+- id: locking-nosql-document-stores-applications-and-analysis-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Databases and this lesson?
+  options:
+  - 'locking; NoSQL: Document stores (MongoDB)'
+  - Hardy-Weinberg equilibrium
+  - orbital angular momentum
+  - electrochemical potential
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - 'Look for the concept locking; NoSQL: Document stores (MongoDB) in the unit.'
+  explanation: 'locking; NoSQL: Document stores (MongoDB) is one of the named concepts
+    in this unit. Use its definition and relationships in context, rather than treating
+    the name alone as understanding.'
+- id: locking-nosql-document-stores-applications-and-analysis-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Databases and this lesson?
+  options:
+  - key-value stores (Redis, DynamoDB)
+  - Hardy-Weinberg equilibrium
+  - orbital angular momentum
+  - electrochemical potential
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept key-value stores (Redis, DynamoDB) in the unit.
+  explanation: key-value stores (Redis, DynamoDB) is one of the named concepts in
+    this unit. Use its definition and relationships in context, rather than treating
+    the name alone as understanding.
+- id: locking-nosql-document-stores-applications-and-analysis-reasoning
+  level: 3
+  stem: Which check best supports a claim that a service change is safe?
+  options:
+  - Test contracts on success and failure paths, including retries and state changes.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Test contracts on success and failure paths, including retries and
+    state changes. Trace one request from caller to storage and back. Mark trust boundaries,
+    state changes, failure points, and retry behavior; then test the contract at both
+    normal and partial-failure cases.

@@ -1,0 +1,51 @@
+subtopic_id: devops-and-cloud-ci-cd-and-release-engineering-deployment-strategies
+questions:
+- id: deployment-strategies-mechanisms-and-methods-1
+  level: 1
+  stem: Which item is explicitly included in the scope of CI/CD and Release Engineering
+    and this lesson?
+  options:
+  - deployment strategies (rolling, blue-green, canary, shadow)
+  - Pauli exclusion principle
+  - Mendelian segregation
+  - Michaelis-Menten kinetics
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept deployment strategies (rolling, blue-green, canary, shadow)
+    in the unit.
+  explanation: deployment strategies (rolling, blue-green, canary, shadow) is one
+    of the named concepts in this unit. Use its definition and relationships in context,
+    rather than treating the name alone as understanding.
+- id: deployment-strategies-mechanisms-and-methods-2
+  level: 2
+  stem: Which item is explicitly included in the scope of CI/CD and Release Engineering
+    and this lesson?
+  options:
+  - feature flags
+  - Pauli exclusion principle
+  - Mendelian segregation
+  - Michaelis-Menten kinetics
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept feature flags in the unit.
+  explanation: feature flags is one of the named concepts in this unit. Use its definition
+    and relationships in context, rather than treating the name alone as understanding.
+- id: deployment-strategies-mechanisms-and-methods-reasoning
+  level: 3
+  stem: Which evidence best supports a safe infrastructure change?
+  options:
+  - Review the plan, stage the change, monitor health, and verify rollback or recovery.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Review the plan, stage the change, monitor health, and verify rollback
+    or recovery. Trace a change from source through deployment to runtime signals.
+    Make the desired state, access boundaries, failure signal, rollback path, and
+    recovery objective explicit before changing a system.

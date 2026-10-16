@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz · {{ title }}</title>
+<style>:root{--bg:#f6f3ed;--ink:#2b2a27;--line:#e3dccd;--accent:#b4532a}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,sans-serif}
+main{max-width:640px;margin:32px auto;padding:0 16px}.card{background:#fffdf8;border:1px solid var(--line);border-radius:12px;padding:20px}
+button{font:inherit;border-radius:8px;border:1px solid var(--line);background:#fff;padding:10px 14px;cursor:pointer;display:block;width:100%;text-align:left;margin:6px 0}
+button.primary{background:var(--accent);color:#fff;border:0;width:auto}.good{background:#dfeedd!important}.bad{background:#f5d9d3!important}.muted{color:#6f6a5f}a{color:var(--accent)}</style></head>
+<body><main><p><a href="/agent">← Study agent</a></p><div class="card"><h2 style="margin-top:0">{{ title }}</h2>
+{% if not available %}<p class="muted">No questions for this subtopic yet.</p>{% else %}
+<div id="q"></div><p id="fb"></p><p><button class="primary" id="hint" style="display:none">Hint</button> <button class="primary" id="next" style="display:none">Next question</button></p>{% endif %}
+</div></main>
+<script>
+const SID={{ subtopic_id|tojson }};const $=s=>document.querySelector(s);let A=null;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function api(p,o={}){const r=await fetch(p,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},...o});if(r.status===401){location='/login';return}const j=await r.json();if(!r.ok)throw new Error(j.detail);return j}
+async function start(){$('#fb').textContent='';$('#next').style.display='none';A=await api(`/api/quiz/${SID}/start`);
+ $('#q').innerHTML=`<p><b>${esc(A.stem)}</b> <span class="muted">(level ${A.level})</span></p>`+A.options.map((o,i)=>`<button data-i="${i}">${esc(o)}</button>`).join('');
+ document.querySelectorAll('#q button').forEach(b=>b.onclick=()=>answer(+b.dataset.i));
+ $('#hint').style.display=A.hints_available?'inline-block':'none';$('#hint').disabled=false}
+async function answer(i){try{const r=await api(`/api/quiz/attempts/${A.attempt_id}/answer`,{body:JSON.stringify({position:i})});
+ const bs=document.querySelectorAll('#q button');bs.forEach(b=>b.disabled=true);bs[r.correct_position].classList.add('good');if(!r.correct)bs[i].classList.add('bad');
+ $('#fb').innerHTML=`${r.correct?'Correct.':'Not quite.'} ${esc(r.explanation)}<br><span class="muted">Your estimated mastery of this topic: ${Math.round(r.mean*100)}% (${r.status})</span>`;
+ $('#hint').style.display='none';$('#next').style.display='inline-block'}catch(e){$('#fb').textContent=e.message}}
+$('#hint')&&($('#hint').onclick=async()=>{try{const h=await api(`/api/quiz/attempts/${A.attempt_id}/hint`);$('#fb').innerHTML='💡 '+esc(h.hint);}catch(e){$('#fb').textContent=e.message;$('#hint').disabled=true}});
+$('#next')&&($('#next').onclick=start);{% if available %}start();{% endif %}
+</script></body></html>

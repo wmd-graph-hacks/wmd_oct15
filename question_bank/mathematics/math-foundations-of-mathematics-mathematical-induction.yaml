@@ -1,0 +1,23 @@
+subtopic_id: math-foundations-of-mathematics-mathematical-induction
+questions:
+- id: ind-1
+  level: 1
+  stem: "Which two parts does a proof by (weak) induction require?"
+  options: ["Base case and inductive step", "Contradiction and contrapositive", "Existence and uniqueness", "Lemma and corollary"]
+  answer: 0
+  hints: ["One part starts the chain, the other propagates it."]
+  explanation: "Prove P(1) (or P(0)) and that P(k) implies P(k+1)."
+- id: ind-2
+  level: 2
+  stem: "What is 1 + 2 + … + n?"
+  options: ["n(n+1)/2", "n²", "n(n−1)/2", "(n+1)²/2"]
+  answer: 0
+  hints: ["Check n = 3: the sum is 6.", "Compare with each option at n = 3."]
+  explanation: "Induction: n(n+1)/2 + (n+1) = (n+1)(n+2)/2."
+- id: ind-3
+  level: 3
+  stem: "A student proves P(k) ⇒ P(k+1) for all k but skips the base case. What can be concluded?"
+  options: ["P(n) holds for all n", "P(n) holds for no n", "Nothing: the implication chain has no starting point", "P(n) holds for even n"]
+  answer: 2
+  hints: ["Consider P(n): 'n = n + 1'. The step holds vacuously-style but the statement is false."]
+  explanation: "Without a true base case the chain of implications never gets started."

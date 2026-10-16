@@ -1,0 +1,23 @@
+subtopic_id: math-foundations-of-mathematics-logic-and-quantifiers
+questions:
+- id: logic-1
+  level: 1
+  stem: "Which statement is the negation of 'for every real x, x² ≥ 0'?"
+  options: ["For every real x, x² < 0", "There exists a real x with x² < 0", "There exists a real x with x² ≥ 0", "For every real x, x² ≤ 0"]
+  answer: 1
+  hints: ["Negating a universal statement changes the quantifier.", "Also negate the inner inequality."]
+  explanation: "¬(∀x P(x)) ≡ ∃x ¬P(x), and ¬(x² ≥ 0) is x² < 0."
+- id: logic-2
+  level: 2
+  stem: "The implication P → Q is logically equivalent to which statement?"
+  options: ["Q → P", "¬P → ¬Q", "¬Q → ¬P", "¬P ∧ Q"]
+  answer: 2
+  hints: ["Think of the contrapositive.", "P → Q is false only when P is true and Q is false."]
+  explanation: "An implication is equivalent to its contrapositive ¬Q → ¬P."
+- id: logic-3
+  level: 3
+  stem: "Which statement is NOT equivalent to the others?"
+  options: ["∀x ∃y (y > x)", "For each real x there is a larger real y", "∃y ∀x (y > x)", "The reals have no maximum"]
+  answer: 2
+  hints: ["Quantifier order matters.", "One option claims a single y beats every x."]
+  explanation: "∃y ∀x (y > x) claims one real exceeds all reals, which is false; the others say the reals are unbounded above."
