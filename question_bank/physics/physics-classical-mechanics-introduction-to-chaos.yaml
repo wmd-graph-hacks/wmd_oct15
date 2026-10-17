@@ -1,0 +1,52 @@
+subtopic_id: physics-classical-mechanics-introduction-to-chaos
+questions:
+- id: introduction-to-chaos-integration-and-limits-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Classical Mechanics and
+    this lesson?
+  options:
+  - introduction to chaos
+  - access control list
+  - DNA replication
+  - transaction isolation
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept introduction to chaos in the unit.
+  explanation: introduction to chaos is one of the named concepts in this unit. Use
+    its definition and relationships in context, rather than treating the name alone
+    as understanding.
+- id: introduction-to-chaos-integration-and-limits-application
+  level: 2
+  stem: Before drawing a conclusion about introduction to chaos, what should you do?
+  options:
+  - Define how the concept is used in this problem and check the relevant assumptions
+    or evidence.
+  - Assume the term has the same meaning in every context.
+  - Ignore conditions that could limit the model.
+  - Accept the first plausible result without checking it.
+  answer: 0
+  hints:
+  - A familiar label does not establish that a model applies.
+  - Check the concept in its specific context.
+  explanation: introduction to chaos should be interpreted in context. Draw the system
+    and choose coordinates and sign conventions. State approximations, derive the
+    relation before inserting values, preserve units, and check limiting cases or
+    conservation laws.
+- id: introduction-to-chaos-integration-and-limits-reasoning
+  level: 3
+  stem: Which check best supports a physical model's prediction?
+  options:
+  - Check dimensions and limiting cases, then compare with measurement and uncertainty.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Check dimensions and limiting cases, then compare with measurement
+    and uncertainty. Draw the system and choose coordinates and sign conventions.
+    State approximations, derive the relation before inserting values, preserve units,
+    and check limiting cases or conservation laws.

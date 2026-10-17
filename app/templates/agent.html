@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study agent · Studyspace</title>
+<style>
+:root{--bg:#f6f3ed;--ink:#2b2a27;--mute:#6f6a5f;--card:#fffdf8;--line:#e3dccd;--accent:#b4532a;--sage:#5c7f5b;--gold:#c99a2e;--red:#b3402f;--blue:#2d5f8a;--purple:#7a4f9a}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 20px;border-bottom:1px solid var(--line)}
+header a{color:var(--mute);text-decoration:none;margin-right:14px}h1{font-size:19px;margin:0}
+#banner{display:none;background:#f5d9d3;color:#6b2418;padding:8px 20px;font-size:14px}#banner.show{display:block}
+main{display:grid;grid-template-columns:minmax(300px,360px) minmax(0,1fr);gap:16px;padding:16px 20px;max-width:1800px;margin:auto;align-items:start}
+@media(max-width:980px){main{grid-template-columns:minmax(0,1fr)}}
+.col{min-width:0}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:14px;min-width:0}
+label{display:block;font-size:12px;color:var(--mute);margin:10px 0 3px;text-transform:uppercase;letter-spacing:.04em}
+input[type=number],textarea,input[type=search]{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
+button{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:8px 13px;font:inherit;cursor:pointer}
+button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}button:disabled{opacity:.5;cursor:wait}
+.row{display:flex;gap:10px}.row>*{flex:1;min-width:0}
+#trace{max-height:46vh;overflow:auto}
+.step{display:flex;gap:8px;padding:7px 0;border-top:1px solid var(--line);align-items:flex-start}.step:first-child{border-top:0}
+.step b{font:600 11px ui-monospace,monospace;background:#efe8d8;border-radius:6px;padding:2px 6px;white-space:nowrap}.step.err b{background:#f3d6d0}
+.step span{min-width:0;overflow-wrap:anywhere}
+.badge{font-size:11px;border-radius:99px;padding:2px 8px;background:#efe8d8;color:var(--mute)}
+.expl{overflow-wrap:anywhere}code{background:#efe8d8;border-radius:4px;padding:1px 4px;font-size:12px;overflow-wrap:anywhere}
+.weeks{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:10px 0}
+.week{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff}.week h4{margin:0 0 4px;font-size:12.5px}.week ul{margin:0;padding-left:16px;font-size:13px}
+.muted{color:var(--mute)}.ok{color:var(--sage)}.warn{color:var(--red)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0 10px}.toolbar input[type=search]{width:190px}
+.toolbar label.chk{display:inline-flex;gap:5px;align-items:center;margin:0;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--mute);margin:0 0 8px}.legend span{display:inline-flex;align-items:center;gap:5px}.legend i{width:11px;height:11px;border-radius:50%;display:inline-block}
+#mapWrap{position:relative;border:1px solid var(--line);border-radius:12px;background:#fffefb;height:max(420px,62vh);overflow:hidden;touch-action:none}
+#svg{width:100%;height:100%;display:block;cursor:grab}#svg.drag{cursor:grabbing}
+#zoom{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px}#zoom button{width:34px;height:34px;padding:0;background:#fff;color:var(--ink);border:1px solid var(--line);font-size:17px}
+#overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;background:#fffefbe6;text-align:center;padding:20px}
+.spin{width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:s 0.9s linear infinite}@keyframes s{to{transform:rotate(360deg)}}
+#detail{margin-top:10px;font-size:14px}#detail ul{margin:4px 0;padding-left:18px}
+.node{cursor:pointer}.node rect{transition:stroke-width .1s}.node:hover rect{stroke:#2b2a27;stroke-width:1.5}
+</style>
+</head>
+<body>
+<header><h1>✦ Study agent <span class="badge">{{ 'LLM on' if llm_enabled else 'deterministic playbook' }}</span></h1>
+<div><label for="subject" class="muted" style="display:inline;margin-right:6px">Subject</label><select id="subject" aria-label="Subject"></select> <a href="/tutor">Ask the tutor</a>{% if is_demo %}<a href="#" id="reset">Reset demo learner</a>{% endif %}<span class="muted">{{ user.name }}</span></div></header>
+<div id="banner" role="alert"></div>
+<main>
+<section class="col">
+  <div class="card">
+    <strong>What do you want to learn?</strong>
+    <label for="goal">Goal</label><textarea id="goal" rows="2"></textarea>
+    <div class="row"><div><label for="hpw">Hours / week</label><input id="hpw" type="number" min="1" max="60" step="0.5" value="6"></div>
+    <div><label for="weeks">Weeks available</label><input id="weeks" type="number" min="1" max="104" value="20"></div></div>
+    <p><button id="go">Ask the agent</button> <span id="status" class="muted" aria-live="polite"></span></p>
+  </div>
+  <div class="card" id="traceCard" hidden><strong>How the agent reasoned</strong> <span class="badge" id="ctrl"></span>
+    <div id="trace"></div></div>
+</section>
+<section class="col">
+  <div class="card" id="answerCard" hidden><strong>Recommendation</strong><p class="expl" id="expl"></p>
+    <div id="plan"></div><p id="actions"></p></div>
+  <div class="card"><strong id="mapTitle">Prerequisite map</strong> <span class="badge" id="mapNote" hidden></span>
+    <div class="toolbar">
+      <input type="search" id="find" placeholder="Find a subtopic…" aria-label="Find a subtopic">
+      <label class="chk"><input type="checkbox" id="onlyNeeded" disabled> Only what my goal needs</label>
+      <label class="chk"><input type="checkbox" id="allLinks"> Show all links</label>
+    </div>
+    <p class="legend"><span><i style="background:var(--sage)"></i>mastered</span><span><i style="background:var(--gold)"></i>learning</span><span><i style="background:var(--red)"></i>gap</span><span><i style="background:#d8d1bf"></i>not started</span><span><i style="background:none;border:2px solid var(--accent)"></i>needed</span><span><i style="background:none;border:2px solid var(--blue)"></i>gatekeeper</span><span style="color:var(--blue)">━ prerequisites of selection</span><span style="color:var(--purple)">━ unlocked by selection</span></p>
+    <div id="mapWrap">
+      <svg id="svg" role="img" aria-label="Prerequisite graph"><defs>
+        <marker id="ar-o" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L8 4L0 8z" fill="#b4532a"/></marker>
+        <marker id="ar-b" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L8 4L0 8z" fill="#2d5f8a"/></marker>
+        <marker id="ar-p" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L8 4L0 8z" fill="#7a4f9a"/></marker>
+        <marker id="ar-g" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L8 4L0 8z" fill="#c9c1ae"/></marker></defs>
+        <g id="vp"></g></svg>
+      <div id="zoom"><button id="zin" title="Zoom in" aria-label="Zoom in">+</button><button id="zout" title="Zoom out" aria-label="Zoom out">−</button><button id="zfit" title="Fit to screen" aria-label="Fit to screen">⤢</button></div>
+      <div id="overlay"><div class="spin"></div><div>Loading the prerequisite graph…</div></div>
+    </div>
+    <div id="detail" class="muted">Click a subtopic to see what it depends on and what it unlocks. Scroll to zoom, drag to pan.</div>
+  </div>
+</section>
+</main>
+<script>
+const $=s=>document.querySelector(s);let G=null,HL={},sel=null,view={k:1,x:0,y:0};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const short=(t,n)=>t.length>n?t.slice(0,n-1)+'…':t;
+function banner(msg){const b=$('#banner');b.textContent=msg||'';b.classList.toggle('show',!!msg)}
+window.addEventListener('offline',()=>banner('You are offline. Reconnect to keep working.'));
+window.addEventListener('online',()=>{banner('');if(!G)loadGraph()});
+async function api(path,opt={},timeout=20000){
+ const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),timeout);
+ try{const r=await fetch(path,{credentials:'same-origin',headers:{'Content-Type':'application/json'},signal:ctl.signal,...opt});
+  if(r.status===401){location='/login';return}
+  const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(typeof j.detail==='string'?j.detail:'Request failed ('+r.status+')');banner('');return j}
+ catch(e){if(e.name==='AbortError')throw new Error('The server took too long to respond. Please try again.');
+  if(e instanceof TypeError)throw new Error('Cannot reach the server. Check that the app and FalkorDB are running, then retry.');throw e}
+ finally{clearTimeout(t)}}
+const COL={mastered:'#5c7f5b',learning:'#c99a2e',gap:'#b3402f',unseen:'#d8d1bf'};
+const NW=170,NH=34,CW=215,RH=50,TOP=44;
+let pos={},vis=[],byId={},ins={},outs={};
+function depths(){ // longest-path depth per node (flat subjects have one lesson per topic, so columns follow dependency depth)
+ const d={};const indeg={};G.nodes.forEach(n=>{d[n.id]=0;indeg[n.id]=(ins[n.id]||[]).length});
+ const q=G.nodes.filter(n=>!indeg[n.id]).map(n=>n.id);
+ while(q.length){const a=q.shift();(outs[a]||[]).forEach(b=>{d[b]=Math.max(d[b],d[a]+1);if(--indeg[b]===0)q.push(b)})}
+ return d}
+function layout(){
+ const need=new Set(HL.needed||[]),only=$('#onlyNeeded').checked&&need.size;
+ vis=G.nodes.filter(n=>!only||need.has(n.id));pos={};
+ if(flat){const d=depths();const ds=[...new Set(vis.map(n=>d[n.id]))].sort((a,b)=>a-b);
+  const cols=ds.map((v,ci)=>({id:'d'+v,title:ds.length>1?'Stage '+(ci+1):'Topics'}));
+  ds.forEach((v,ci)=>{vis.filter(n=>d[n.id]===v).sort((a,b)=>a.col-b.col).forEach((n,ri)=>{pos[n.id]={x:ci*CW+20,y:TOP+ri*RH}})});return cols}
+ const topics=G.topics.filter(t=>vis.some(n=>n.topic_id===t.id));
+ topics.forEach((t,ci)=>{vis.filter(n=>n.topic_id===t.id).sort((a,b)=>a.row-b.row).forEach((n,ri)=>{pos[n.id]={x:ci*CW+20,y:TOP+ri*RH}})});
+ return topics}
+function edgePath(a,b){const x1=a.x+NW,y1=a.y+NH/2,x2=b.x,y2=b.y+NH/2;
+ if(x2>x1){const d=Math.max(30,(x2-x1)/2);return `M${x1} ${y1}C${x1+d} ${y1},${x2-d} ${y2},${x2} ${y2}`}
+ if(a.x===b.x){const r=a.x+NW;return `M${r} ${a.y+NH/2}C${r+46} ${a.y+NH/2},${r+46} ${b.y+NH/2},${r} ${b.y+NH/2}`} // same column: loop on the right side
+ return `M${x1} ${y1}C${x1+50} ${y1},${x2-50} ${y2},${x2} ${y2}`}
+function draw(){
+ if(!G)return;const topics=layout();const need=new Set(HL.needed||[]),path=HL.path||[],pathE=new Set(path.slice(1).map((p,i)=>path[i]+'>'+p));
+ const bn=new Set(HL.bottlenecks||[]),tg=new Set(HL.targets||[]),all=$('#allLinks').checked;
+ const q=$('#find').value.trim().toLowerCase();let s='';
+ topics.forEach((t,i)=>{s+=`<text x="${i*CW+20}" y="24" font-weight="600" font-size="13" fill="#6f6a5f">${esc(short(t.title,26))}</text>`});
+ const up=new Set(),down=new Set();if(sel){(ins[sel]||[]).forEach(a=>up.add(a+'>'+sel));(outs[sel]||[]).forEach(b=>down.add(sel+'>'+b))}
+ let faint='',mid='',hot='';
+ G.edges.forEach(e=>{const a=pos[e.a],b=pos[e.b];if(!a||!b)return;const k=e.a+'>'+e.b;const d=edgePath(a,b);
+  if(pathE.has(k))hot+=`<path d="${d}" fill="none" stroke="#b4532a" stroke-width="3.2" marker-end="url(#ar-o)"/>`;
+  else if(up.has(k))hot+=`<path d="${d}" fill="none" stroke="#2d5f8a" stroke-width="2.4" marker-end="url(#ar-b)"/>`;
+  else if(down.has(k))hot+=`<path d="${d}" fill="none" stroke="#7a4f9a" stroke-width="2.4" marker-end="url(#ar-p)"/>`;
+  else if(need.has(e.a)&&need.has(e.b))mid+=`<path d="${d}" fill="none" stroke="#b4532a" stroke-opacity=".45" stroke-width="1.4" ${e.soft?'stroke-dasharray="4 3"':''} marker-end="url(#ar-o)"/>`;
+  else if(all)faint+=`<path d="${d}" fill="none" stroke="#c9c1ae" stroke-opacity=".5" stroke-width=".8" marker-end="url(#ar-g)"/>`});
+ s+=faint+mid+hot;
+ vis.forEach(n=>{const p=pos[n.id];const ring=tg.has(n.id)?'#b4532a':bn.has(n.id)?'#2d5f8a':need.has(n.id)?'#b4532a':'transparent';
+  const dim=q&&!n.title.toLowerCase().includes(q);const sw=ring==='transparent'?0:tg.has(n.id)?3:2;const isSel=n.id===sel;
+  s+=`<g class="node" data-id="${esc(n.id)}" opacity="${dim?.25:1}"><title>${esc(n.title)} · ${n.minutes} min · ${n.state}</title>
+  <rect x="${p.x}" y="${p.y}" width="${NW}" height="${NH}" rx="8" fill="${COL[n.state]||COL.unseen}${n.state==='unseen'?'':'88'}" stroke="${isSel?'#2b2a27':ring}" stroke-width="${isSel?3:sw}"/>
+  <text x="${p.x+NW/2}" y="${p.y+NH/2+4}" text-anchor="middle" font-size="11.5" fill="#2b2a27" pointer-events="none">${esc(short(n.title,25))}</text>
+  ${n.has_quiz?`<circle cx="${p.x+NW-7}" cy="${p.y+7}" r="4" fill="#2d5f8a" pointer-events="none"/>`:''}</g>`});
+ $('#vp').innerHTML=s;applyView()}
+function applyView(){$('#vp').setAttribute('transform',`translate(${view.x} ${view.y}) scale(${view.k})`)}
+function fit(){if(!vis.length)return;const W=$('#svg').clientWidth,H=$('#svg').clientHeight;
+ let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;vis.forEach(n=>{const p=pos[n.id];x0=Math.min(x0,p.x);y0=Math.min(y0,p.y);x1=Math.max(x1,p.x+NW);y1=Math.max(y1,p.y+NH)});
+ y0=0;const pad=24,k=Math.min((W-2*pad-50)/(x1-x0+50),(H-2*pad)/(y1-y0),1.6);
+ view={k,x:(W-50-(x1-x0)*k)/2-x0*k,y:(H-(y1-y0)*k)/2-y0*k};applyView()}
+function zoomAt(f,cx,cy){const k=Math.max(.15,Math.min(3,view.k*f));const r=k/view.k;view={k,x:cx-(cx-view.x)*r,y:cy-(cy-view.y)*r};applyView()}
+(function(){const svg=$('#svg');let drag=null,moved=false;
+ svg.addEventListener('wheel',e=>{e.preventDefault();const b=svg.getBoundingClientRect();zoomAt(e.deltaY<0?1.12:1/1.12,e.clientX-b.left,e.clientY-b.top)},{passive:false});
+ svg.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,vx:view.x,vy:view.y};moved=false;svg.setPointerCapture(e.pointerId)});
+ svg.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>4){moved=true;svg.classList.add('drag')}view.x=drag.vx+dx;view.y=drag.vy+dy;applyView()});
+ svg.addEventListener('pointerup',e=>{svg.classList.remove('drag');if(!moved){const n=e.target.closest&&e.target.closest('.node');select(n?n.dataset.id:null)}drag=null});
+ $('#zin').onclick=()=>zoomAt(1.25,svg.clientWidth/2,svg.clientHeight/2);$('#zout').onclick=()=>zoomAt(.8,svg.clientWidth/2,svg.clientHeight/2);$('#zfit').onclick=fit;
+ window.addEventListener('resize',()=>{if(G)fit()})})();
+function select(id){sel=id;draw();const d=$('#detail');if(!id){d.className='muted';d.textContent='Click a subtopic to see what it depends on and what it unlocks. Scroll to zoom, drag to pan.';return}
+ const n=byId[id];const list=a=>a.length?'<ul>'+a.map(i=>`<li>${esc(byId[i].title)} <span class="muted">(${byId[i].state})</span></li>`).join('')+'</ul>':' <span class="muted">nothing</span>';
+ d.className='';d.innerHTML=`<b>${esc(n.title)}</b> <span class="badge">${n.state}</span> <span class="muted">${n.minutes} min</span>
+ <div><b>Depends on:</b>${list(ins[id]||[])}</div><div><b>Unlocks:</b>${list(outs[id]||[])}</div>
+ <p>${n.has_quiz?`<a href="/quiz/${esc(id)}"><button class="ghost" type="button">Take a quiz</button></a> `:''}<button type="button" id="mkgoal">Make this my goal</button></p>`;
+ $('#mkgoal').onclick=()=>{$('#goal').value='I want to learn '+n.title;$('#goal').focus();window.scrollTo({top:0,behavior:'smooth'})}}
+let flat=false,SUBJ=null,SUBJECTS=[];
+async function loadSubjects(){
+ try{SUBJECTS=(await api('/api/agent/subjects')).subjects}catch(e){banner(e.message);return}
+ const sel=$('#subject');sel.innerHTML=SUBJECTS.map(s=>`<option value="${esc(s.subject)}">${esc(s.title)}${s.thin?' (thin data)':''}</option>`).join('');
+ let want=null;try{want=new URLSearchParams(location.search).get('subject')||localStorage.getItem('wmd.subject')}catch(e){}
+ SUBJ=SUBJECTS.some(s=>s.subject===want)?want:(SUBJECTS.find(s=>s.subject==='mathematics')||SUBJECTS[0]||{}).subject;
+ sel.value=SUBJ;setSubject(false)}
+function setSubject(reset){const s=SUBJECTS.find(x=>x.subject===SUBJ)||{};try{localStorage.setItem('wmd.subject',SUBJ)}catch(e){}
+ $('#goal').value=s.example_goal||'';$('#mapTitle').textContent=(s.title||'')+' prerequisite map';
+ const note=$('#mapNote');note.hidden=!s.thin;note.textContent=s.authored_edges?'':'order inferred from syllabus stages';
+ note.title=s.thin?'This subject has one generic lesson per topic and no authored prerequisites; links are inferred from syllabus stage order.':'';
+ HL={};sel=null;$('#onlyNeeded').checked=false;$('#onlyNeeded').disabled=true;$('#traceCard').hidden=$('#answerCard').hidden=true;$('#plan').innerHTML='';
+ loadGraph()}
+$('#subject').onchange=e=>{SUBJ=e.target.value;setSubject(true)};
+async function loadGraph(){
+ $('#overlay').style.display='flex';$('#overlay').innerHTML='<div class="spin"></div><div>Loading the prerequisite graph…</div>';
+ try{G=await api('/api/agent/graph?subject='+encodeURIComponent(SUBJ||''));byId={};ins={};outs={};G.nodes.forEach(n=>byId[n.id]=n);
+  G.edges.forEach(e=>{(outs[e.a]=outs[e.a]||[]).push(e.b);(ins[e.b]=ins[e.b]||[]).push(e.a)});
+  flat=G.topics.length>0&&G.nodes.length<=G.topics.length;$('#overlay').style.display='none';draw();fit()}
+ catch(e){G=null;$('#overlay').innerHTML=`<div class="warn"><b>Could not load the graph</b></div><div class="muted">${esc(e.message)}</div><button id="retry">Retry</button>`;$('#retry').onclick=loadGraph}}
+function renderRun(run){$('#traceCard').hidden=false;$('#ctrl').textContent=run.controller+(run.fallback_reason?' (fallback: '+run.fallback_reason.slice(0,70)+')':'');
+ $('#trace').innerHTML=run.steps.map(s=>`<div class="step ${s.ok?'':'err'}"><b>${s.index}. ${esc(s.tool)}</b><span>${esc(s.summary)} <span class="muted">${s.ms} ms</span></span></div>`).join('')||'<span class="muted">No tool calls.</span>';
+ $('#answerCard').hidden=false;
+ $('#expl').innerHTML=esc(run.explanation).replace(/\s*\(`[a-z0-9]+(?:-[a-z0-9]+)+`\)/g,'').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/`([a-z0-9]+(?:-[a-z0-9]+)+)`/g,(m,id)=>`<code>${esc((byId[id]||{}).title||id)}</code>`).replace(/`([^`]+)`/g,'<code>$1</code>');
+ HL=run.highlight||{};const has=(HL.needed||[]).length>0;const o=$('#onlyNeeded');o.disabled=!has;o.checked=has;
+ $('#plan').innerHTML='';$('#actions').innerHTML='';if(G){draw();fit()}
+ if(run.proposal_id)showProposal(run.proposal_id)}
+async function showProposal(id){let p;try{p=await api('/api/agent/proposals/'+id)}catch(e){$('#plan').innerHTML=`<span class="warn">${esc(e.message)}</span>`;return}
+ $('#plan').innerHTML=`<p><b>Proposed plan</b> <span class="badge">${esc(p.status)}</span> ${p.fits_deadline?'<span class="ok">fits your deadline</span>':'<span class="warn">longer than your deadline</span>'}</p><div class="weeks">`+
+  p.weeks.map(w=>`<div class="week"><h4>Week ${w.week} · ${w.starts} · ${w.minutes} min</h4><ul>${w.items.map(i=>`<li>${esc(i.title)} <span class="muted">${i.minutes}m</span></li>`).join('')}</ul></div>`).join('')+'</div>'+
+  (p.checkpoint_quizzes.length?`<p>Self-test checkpoints: ${p.checkpoint_quizzes.map(q=>`<a href="/quiz/${q}">${esc((byId[q]||{}).title||q)}</a>`).join(', ')}</p>`:'');
+ if(p.status==='proposed')$('#actions').innerHTML=`<button id="ok">Approve this plan</button> <button class="ghost" id="no">Not now</button>`;
+ else $('#actions').innerHTML=`<span class="ok">Plan ${esc(p.status)}.</span>`;
+ const ok=$('#ok');if(ok){const act=async(path)=>{ok.disabled=true;try{await api(path,{method:'POST'});showProposal(id)}catch(e){banner(e.message);ok.disabled=false}};
+  ok.onclick=()=>act(`/api/agent/proposals/${id}/approve`);$('#no').onclick=()=>act(`/api/agent/proposals/${id}/reject`)}}
+$('#go').onclick=async()=>{const b=$('#go');b.disabled=true;$('#status').textContent='Agent is querying the graph…';
+ try{const run=await api('/api/agent/runs',{method:'POST',body:JSON.stringify({goal:$('#goal').value,subject:SUBJ,hours_per_week:+$('#hpw').value,weeks_available:+$('#weeks').value})},90000);
+  renderRun(run);$('#status').textContent=run.status==='failed'?'':'Done.'}catch(e){$('#status').textContent='';banner(e.message)}finally{b.disabled=false}};
+['onlyNeeded','allLinks'].forEach(i=>$('#'+i).addEventListener('change',()=>{draw();fit()}));$('#find').addEventListener('input',draw);
+const rs=$('#reset');if(rs)rs.onclick=async e=>{e.preventDefault();try{await api('/api/agent/demo/reset',{method:'POST'});HL={};sel=null;$('#onlyNeeded').checked=false;$('#onlyNeeded').disabled=true;await loadGraph();$('#traceCard').hidden=$('#answerCard').hidden=true}catch(er){banner(er.message)}};
+loadSubjects();
+</script>
+</body></html>

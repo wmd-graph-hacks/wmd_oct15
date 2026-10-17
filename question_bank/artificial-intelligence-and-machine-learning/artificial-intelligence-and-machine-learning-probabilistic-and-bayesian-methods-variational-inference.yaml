@@ -1,0 +1,52 @@
+subtopic_id: artificial-intelligence-and-machine-learning-probabilistic-and-bayesian-methods-variational-inference
+questions:
+- id: variational-inference-mechanisms-and-methods-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Probabilistic and Bayesian
+    Methods and this lesson?
+  options:
+  - variational inference
+  - membrane transport
+  - Kubernetes scheduling
+  - chemical equilibrium
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept variational inference in the unit.
+  explanation: variational inference is one of the named concepts in this unit. Use
+    its definition and relationships in context, rather than treating the name alone
+    as understanding.
+- id: variational-inference-mechanisms-and-methods-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Probabilistic and Bayesian
+    Methods and this lesson?
+  options:
+  - expectation-maximization (EM)
+  - membrane transport
+  - Kubernetes scheduling
+  - chemical equilibrium
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept expectation-maximization (EM) in the unit.
+  explanation: expectation-maximization (EM) is one of the named concepts in this
+    unit. Use its definition and relationships in context, rather than treating the
+    name alone as understanding.
+- id: variational-inference-mechanisms-and-methods-reasoning
+  level: 3
+  stem: Which evidence best supports a claim that a model will generalize?
+  options:
+  - Evaluate a representative held-out set, compare to a baseline, and inspect relevant
+    error groups.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Evaluate a representative held-out set, compare to a baseline, and
+    inspect relevant error groups. Separate training, validation, and test evidence;
+    compare against a simple baseline; inspect errors by subgroup; and state what
+    distribution the result is expected to generalize to.

@@ -1,0 +1,50 @@
+subtopic_id: backend-engineering-reliability-and-observability-slos
+questions:
+- id: slos-mechanisms-and-methods-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Reliability and Observability
+    and this lesson?
+  options:
+  - SLOs
+  - Hardy-Weinberg equilibrium
+  - orbital angular momentum
+  - electrochemical potential
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept SLOs in the unit.
+  explanation: SLOs is one of the named concepts in this unit. Use its definition
+    and relationships in context, rather than treating the name alone as understanding.
+- id: slos-mechanisms-and-methods-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Reliability and Observability
+    and this lesson?
+  options:
+  - and error budgets
+  - Hardy-Weinberg equilibrium
+  - orbital angular momentum
+  - electrochemical potential
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept and error budgets in the unit.
+  explanation: and error budgets is one of the named concepts in this unit. Use its
+    definition and relationships in context, rather than treating the name alone as
+    understanding.
+- id: slos-mechanisms-and-methods-reasoning
+  level: 3
+  stem: Which check best supports a claim that a service change is safe?
+  options:
+  - Test contracts on success and failure paths, including retries and state changes.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Test contracts on success and failure paths, including retries and
+    state changes. Trace one request from caller to storage and back. Mark trust boundaries,
+    state changes, failure points, and retry behavior; then test the contract at both
+    normal and partial-failure cases.

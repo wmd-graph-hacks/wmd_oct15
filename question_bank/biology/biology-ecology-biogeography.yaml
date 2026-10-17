@@ -1,0 +1,49 @@
+subtopic_id: biology-ecology-biogeography
+questions:
+- id: biogeography-mechanisms-and-methods-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Ecology and this lesson?
+  options:
+  - biogeography
+  - HTTP cache invalidation
+  - Bellman optimality equation
+  - Coulomb's law
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept biogeography in the unit.
+  explanation: biogeography is one of the named concepts in this unit. Use its definition
+    and relationships in context, rather than treating the name alone as understanding.
+- id: biogeography-mechanisms-and-methods-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Ecology and this lesson?
+  options:
+  - conservation biology
+  - HTTP cache invalidation
+  - Bellman optimality equation
+  - Coulomb's law
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept conservation biology in the unit.
+  explanation: conservation biology is one of the named concepts in this unit. Use
+    its definition and relationships in context, rather than treating the name alone
+    as understanding.
+- id: biogeography-mechanisms-and-methods-reasoning
+  level: 3
+  stem: Which evidence best supports a causal biological explanation?
+  options:
+  - Use a controlled comparison that tests a prediction while measuring the relevant
+    outcome.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Use a controlled comparison that tests a prediction while measuring
+    the relevant outcome. State the biological scale and hypothesis, identify the
+    control and measured outcome, trace the proposed mechanism, and distinguish correlation
+    from causal evidence. Consider biological variability and ethical limits.

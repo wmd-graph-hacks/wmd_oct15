@@ -1,0 +1,52 @@
+subtopic_id: artificial-intelligence-and-machine-learning-systems-and-mlops-core-concepts
+questions:
+- id: gpu-and-accelerator-architecture-foundations-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Systems and MLOps and this
+    lesson?
+  options:
+  - GPU and accelerator architecture
+  - membrane transport
+  - Kubernetes scheduling
+  - chemical equilibrium
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept GPU and accelerator architecture in the unit.
+  explanation: GPU and accelerator architecture is one of the named concepts in this
+    unit. Use its definition and relationships in context, rather than treating the
+    name alone as understanding.
+- id: gpu-and-accelerator-architecture-foundations-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Systems and MLOps and this
+    lesson?
+  options:
+  - mixed-precision training
+  - membrane transport
+  - Kubernetes scheduling
+  - chemical equilibrium
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept mixed-precision training in the unit.
+  explanation: mixed-precision training is one of the named concepts in this unit.
+    Use its definition and relationships in context, rather than treating the name
+    alone as understanding.
+- id: gpu-and-accelerator-architecture-foundations-reasoning
+  level: 3
+  stem: Which evidence best supports a claim that a model will generalize?
+  options:
+  - Evaluate a representative held-out set, compare to a baseline, and inspect relevant
+    error groups.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Evaluate a representative held-out set, compare to a baseline, and
+    inspect relevant error groups. Separate training, validation, and test evidence;
+    compare against a simple baseline; inspect errors by subgroup; and state what
+    distribution the result is expected to generalize to.

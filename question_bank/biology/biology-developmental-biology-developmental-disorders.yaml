@@ -1,0 +1,54 @@
+subtopic_id: biology-developmental-biology-developmental-disorders
+questions:
+- id: developmental-disorders-applications-and-analysis-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Developmental Biology and
+    this lesson?
+  options:
+  - developmental disorders
+  - HTTP cache invalidation
+  - Bellman optimality equation
+  - Coulomb's law
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept developmental disorders in the unit.
+  explanation: developmental disorders is one of the named concepts in this unit.
+    Use its definition and relationships in context, rather than treating the name
+    alone as understanding.
+- id: developmental-disorders-applications-and-analysis-application
+  level: 2
+  stem: Before drawing a conclusion about developmental disorders, what should you
+    do?
+  options:
+  - Define how the concept is used in this problem and check the relevant assumptions
+    or evidence.
+  - Assume the term has the same meaning in every context.
+  - Ignore conditions that could limit the model.
+  - Accept the first plausible result without checking it.
+  answer: 0
+  hints:
+  - A familiar label does not establish that a model applies.
+  - Check the concept in its specific context.
+  explanation: developmental disorders should be interpreted in context. State the
+    biological scale and hypothesis, identify the control and measured outcome, trace
+    the proposed mechanism, and distinguish correlation from causal evidence. Consider
+    biological variability and ethical limits.
+- id: developmental-disorders-applications-and-analysis-reasoning
+  level: 3
+  stem: Which evidence best supports a causal biological explanation?
+  options:
+  - Use a controlled comparison that tests a prediction while measuring the relevant
+    outcome.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Use a controlled comparison that tests a prediction while measuring
+    the relevant outcome. State the biological scale and hypothesis, identify the
+    control and measured outcome, trace the proposed mechanism, and distinguish correlation
+    from causal evidence. Consider biological variability and ethical limits.

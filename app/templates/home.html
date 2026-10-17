@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f3ed">
+  <title>{{ course.title }} · Studyspace</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="app-page">
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="brand" href="/" aria-label="Studyspace home">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5c3.2-.8 5.9-.3 8 1.2v12c-2.1-1.5-4.8-2-8-1.2v-12Zm16 0c-3.2-.8-5.9-.3-8 1.2v12c2.1-1.5 4.8-2 8-1.2v-12Z"/><path d="M12 6.8v12"/></svg></span>
+        <span>study<span class="brand-light">space</span></span>
+      </a>
+
+      <div class="side-label">YOUR DESK</div>
+      <nav class="side-nav">
+        <a class="side-link active" href="#overview"><span class="nav-icon">⌂</span> Overview</a>
+        <a class="side-link" href="#study-plan"><span class="nav-icon">▤</span> Study plan <span class="nav-count">{{ recommendations|length }}</span></a>
+        <a class="side-link" href="#progress"><span class="nav-icon">◷</span> Your progress</a>
+        <a class="side-link" href="/agent"><span class="nav-icon">✦</span> Study agent</a>
+      </nav>
+
+      <div class="sidebar-course">
+        <div class="course-cover mini-cover" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div><span class="side-label">CURRENT COURSE</span><strong>{{ course.title }}</strong><small>{{ course.topics|length }} topics · Foundations</small></div>
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="profile-row"><span class="avatar">{{ (user.name or 'L')[0]|upper }}</span><span class="profile-name">{{ user.name }}</span></div>
+        <div class="profile-actions">
+          {% if user.uid == 'demo-nimesh' %}<form method="post" action="/demo/reset"><button class="side-action" type="submit">Reset demo data</button></form>{% endif %}
+          <form method="post" action="/auth/logout"><button class="side-action" type="submit">Sign out <span>↗</span></button></form>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content" id="overview">
+      <header class="mobile-header">
+        <a class="brand" href="/"><span class="brand-mark" aria-hidden="true">▤</span><span>study<span class="brand-light">space</span></span></a>
+        <form method="post" action="/auth/logout"><button class="text-button" type="submit">Sign out</button></form>
+      </header>
+
+      <div class="page-topline"><span>MY LEARNING DESK</span><span class="today-chip"><i></i> A plan made for you</span></div>
+
+      <section class="welcome-hero">
+        <div class="welcome-copy">
+          <p class="eyebrow">A STEADY PATH FORWARD</p>
+          <h1>Make room for<br><em>understanding.</em></h1>
+          <p class="hero-description">A little, well-chosen progress adds up. Your learning path follows the ideas you need, in the order you need them.</p>
+          <a class="hero-link" href="#study-plan">See your next steps <span>↓</span></a>
+        </div>
+        <div class="hero-art" aria-label="A stack of study books">
+          <div class="sun-disc"></div><div class="book-stack">
+            <div class="book book-one"><span class="book-rule"></span><span>FOUNDATIONS</span><i>01</i></div>
+            <div class="book book-two"><span class="book-rule"></span><span>THE LANGUAGE<br>OF ALGEBRA</span><i>02</i></div>
+            <div class="book book-three"><span class="book-rule"></span><span>IDEAS IN<br>CALCULUS</span><i>03</i></div>
+          </div>
+          <span class="art-caption">one page at a time</span>
+        </div>
+      </section>
+
+      <section class="overview-strip" aria-label="Learning overview">
+        <div class="overview-stat"><span class="stat-icon">▧</span><div><strong>{{ course.topics|length }}</strong><span>ideas in this course</span></div></div>
+        <div class="overview-stat"><span class="stat-icon terracotta">↗</span><div><strong>{{ recommendations|length }}</strong><span>next steps in your path</span></div></div>
+        <div class="overview-stat"><span class="stat-icon sage">✓</span><div><strong>{{ attempts|length }}</strong><span>topics you've checked</span></div></div>
+        <div class="overview-note"><span class="note-mark">✳</span><span>Your plan changes as<br>you learn.</span></div>
+      </section>
+
+      <section class="study-layout" id="study-plan">
+        <div class="plan-column">
+          <div class="section-title-row">
+            <div><p class="eyebrow">THE NEXT CHAPTER</p><h2>Your study path</h2></div>
+            <span class="quiet-label">IN PREREQUISITE ORDER</span>
+          </div>
+          <p class="section-intro">Start with the foundations. Each step prepares you for the next.</p>
+
+          {% if recommendations %}
+          <div class="recommendations">
+            {% for item in recommendations %}
+            <article class="lesson-card">
+              <div class="lesson-index"><span>{{ "%02d"|format(loop.index) }}</span><i></i></div>
+              <div class="lesson-content">
+                <div class="lesson-meta"><span>CHAPTER {{ "%02d"|format(loop.index) }}</span><span class="meta-divider">·</span><span>{{ item.minutes }} MIN READ</span>
+                  {% if item.attempt %}<span class="mastery-tag">CHECKED {{ item.attempt.score }}/{{ item.attempt.max_score }}</span>{% elif item.session_done %}<span class="mastery-tag">SESSION DONE</span>{% else %}<span class="unknown-tag">NEW TO YOU</span>{% endif %}
+                </div>
+                <h3>{{ item.topic }}</h3>
+                <p class="lesson-reason">{{ item.reason }}</p>
+                <div class="path-note"><span>PATH</span>{{ item.path|join('  ›  ') }}</div>
+                {% if item.resource %}
+                <a class="resource-card" href="{{ item.url }}" target="_blank" rel="noreferrer">
+                  <span class="resource-icon">↗</span><span class="resource-info"><small>YOUR READING</small><strong>{{ item.resource }}</strong></span><span class="resource-source">{{ item.resource_source or 'RESOURCE' }}</span>
+                </a>
+                {% else %}<p class="no-resource">A source-linked reading for this topic is not available yet.</p>{% endif %}
+                <div class="lesson-actions">
+                  {% if item.session_done %}<span class="done-label"><span>✓</span> Session complete</span>{% else %}
+                  <form method="post" action="/sessions/complete"><input type="hidden" name="topic_id" value="{{ item.topic_id }}"><button class="complete-button" type="submit"><span class="empty-check"></span> Mark session complete</button></form>
+                  {% endif %}
+                  <form method="post" action="/attempts" class="quick-check"><input type="hidden" name="topic_id" value="{{ item.topic_id }}"><input type="hidden" name="max_score" value="5"><label for="score-{{ item.topic_id }}">Quick check</label><input id="score-{{ item.topic_id }}" type="number" name="score" min="0" max="5" value="3" required aria-label="Your score out of 5"><button type="submit" aria-label="Save quick check score">Save <span>↗</span></button></form>
+                </div>
+              </div>
+            </article>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="empty-state"><span class="empty-ornament">✳</span><h3>Your path is clear for now</h3><p>There are no unresolved topics along this prerequisite path. Change your goal or record a quick check to refresh your plan.</p></div>
+          {% endif %}
+        </div>
+
+        <aside class="right-column">
+          <section class="target-card">
+            <div class="card-heading"><span class="eyebrow">YOUR INTENTION</span><span class="target-spark">✳</span></div>
+            <h2>Set a gentle<br>rhythm.</h2>
+            <p>Tell us what you're working toward. We'll shape a realistic daily path.</p>
+            <form method="post" action="/plans" class="target-form">
+              <label for="exam-topic">I'M LEARNING FOR</label>
+              <select id="exam-topic" name="exam_topic" required>
+                <option value="quadratics" {% if preferences.exam_topic == 'quadratics' %}selected{% endif %}>Quadratic equations</option>
+                <option value="limits" {% if preferences.exam_topic == 'limits' %}selected{% endif %}>Limits</option>
+                <option value="derivatives" {% if not preferences.exam_topic or preferences.exam_topic == 'derivatives' %}selected{% endif %}>Derivatives</option>
+              </select>
+              <label for="exam-date">MY GOAL DATE</label>
+              <input id="exam-date" type="date" name="exam_date" min="{{ today }}" value="{{ preferences.exam_date or '' }}" required>
+              <label for="daily-minutes">MY DAILY STUDY TIME</label>
+              <div class="minutes-field"><input id="daily-minutes" type="number" name="minutes_per_day" min="10" max="480" value="{{ preferences.minutes_per_day or 45 }}" required><span>minutes</span></div>
+              <button class="button primary target-submit" type="submit">Save my intention <span>→</span></button>
+            </form>
+            {% if request.query_params.get('error') %}<p class="error" role="alert">Please check the date and values, then try again.</p>{% endif %}
+          </section>
+
+          <section class="progress-card" id="progress">
+            <div class="card-heading"><span class="eyebrow">A LOOK BACK</span><span class="progress-mark">◌</span></div>
+            <h2>Your notes</h2>
+            {% if attempts %}
+            <ul class="attempt-list">{% for topic_id, attempt in attempts.items() %}<li><span class="attempt-dot"></span><span class="attempt-topic">{{ attempt.title }}</span><strong>{{ attempt.score }}<small>/{{ attempt.max_score }}</small></strong></li>{% endfor %}</ul>
+            {% else %}<div class="progress-empty"><span>✎</span><p>Your first quick check will show up here. It helps the planner understand what you already know.</p></div>{% endif %}
+            <p class="fine-print">Quick checks are useful signals, not a final measure of mastery.</p>
+          </section>
+        </aside>
+      </section>
+
+      <section class="graph-section">
+        <div class="graph-heading"><div><p class="eyebrow">THE THREAD BETWEEN IDEAS</p><h2>Learning is connected.</h2></div><p>FalkorDB keeps the prerequisite relationships, so your plan can follow the ideas that lead to your goal.</p></div>
+        <div class="concept-path" aria-label="Example prerequisite path from fractions to derivatives">
+          <div class="concept-node"><span>01</span>Fractions</div><i>→</i><div class="concept-node"><span>02</span>Ratios</div><i>→</i><div class="concept-node"><span>03</span>Equations</div><i>→</i><div class="concept-node"><span>04</span>Functions</div><i>→</i><div class="concept-node"><span>05</span>Limits</div><i>→</i><div class="concept-node final-node"><span>06</span>Derivatives</div>
+        </div>
+      </section>
+      <footer class="page-footer"><span>studyspace</span><span>Built for curious minds · {{ course.title }}</span><a href="#overview">Back to top ↑</a></footer>
+    </main>
+  </div>
+</body>
+</html>

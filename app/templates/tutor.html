@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tutor · Studyspace</title>
+<style>
+:root{--bg:#f6f3ed;--ink:#2b2a27;--mute:#6f6a5f;--card:#fffdf8;--line:#e3dccd;--accent:#b4532a;--sage:#5c7f5b;--gold:#c99a2e;--red:#b3402f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 20px;border-bottom:1px solid var(--line)}
+header a{color:var(--mute);text-decoration:none;margin-right:14px}h1{font-size:19px;margin:0}
+#banner{display:none;background:#f5d9d3;color:#6b2418;padding:8px 20px}#banner.show{display:block}
+main{display:grid;grid-template-columns:minmax(280px,340px) minmax(0,1fr);gap:16px;padding:16px 20px;max-width:1400px;margin:auto;align-items:start}
+@media(max-width:900px){main{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:14px;min-width:0}
+label{display:block;font-size:12px;color:var(--mute);margin:10px 0 3px;text-transform:uppercase;letter-spacing:.04em}
+input[type=number],textarea{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
+button{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:8px 13px;font:inherit;cursor:pointer}button:disabled{opacity:.5;cursor:wait}
+button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.opts label.o{display:flex;gap:8px;align-items:center;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);margin:4px 0}
+.topics{max-height:230px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:4px 8px;background:#fff}
+.badge{font-size:11px;border-radius:99px;padding:2px 8px;background:#efe8d8;color:var(--mute);margin-right:4px}
+.ans{white-space:pre-wrap;overflow-wrap:anywhere}.ans sup{color:var(--accent);font-weight:600}
+.cite{border-top:1px solid var(--line);padding:8px 0;font-size:13px;overflow-wrap:anywhere}.cite b{color:var(--accent)}
+.warn{color:var(--red)}.muted{color:var(--mute)}.ok{color:var(--sage)}
+.chips a{display:inline-block;margin:3px 6px 3px 0;padding:3px 9px;border:1px solid var(--line);border-radius:99px;background:#fff;color:var(--ink);text-decoration:none;font-size:13px}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:s .9s linear infinite;vertical-align:-2px}@keyframes s{to{transform:rotate(360deg)}}
+</style></head>
+<body>
+<header><h1>✦ Tutor <span class="badge">{{ 'LLM answers' if llm_enabled else 'cited passages' }}</span></h1>
+<div><a href="/agent">Study planner</a><span class="muted">{{ user.name }}</span></div></header>
+<div id="banner" role="alert"></div>
+<main>
+<section>
+  <div class="card"><strong>About you</strong> <span class="badge" id="pstate"></span>
+    <p class="muted" style="font-size:13px;margin:6px 0">Used to pitch answers at the right level. Your quiz results take over as you practise.</p>
+    <div class="opts"><label>Your level</label>
+      <label class="o"><input type="radio" name="lvl" value="beginner"> Beginner, new to this</label>
+      <label class="o"><input type="radio" name="lvl" value="intermediate" checked> Intermediate</label>
+      <label class="o"><input type="radio" name="lvl" value="advanced"> Advanced</label></div>
+    <label for="hpw">Hours per week</label><input id="hpw" type="number" min="1" max="60" step="0.5" value="5">
+    <label>Topics you already know (we'll confirm with quizzes)</label><div class="topics" id="topics">Loading…</div>
+    <p><button id="save">Save</button> <span id="saved" class="muted"></span></p>
+  </div>
+</section>
+<section>
+  <div class="card"><strong>Ask a question</strong> <select id="subject" aria-label="Subject"></select>
+    <label for="q" class="muted">Answers come only from the course lessons, with sources.</label>
+    <textarea id="q" rows="2" placeholder="Ask about a concept in the selected subject"></textarea>
+    <p><button id="ask">Ask</button> <span id="status" class="muted" aria-live="polite"></span></p>
+  </div>
+  <div class="card" id="out" hidden></div>
+</section>
+</main>
+<script>
+const $=s=>document.querySelector(s);const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function banner(m){const b=$('#banner');b.textContent=m||'';b.classList.toggle('show',!!m)}
+async function api(path,opt={},timeout=60000){const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),timeout);
+ try{const r=await fetch(path,{credentials:'same-origin',headers:{'Content-Type':'application/json'},signal:ctl.signal,...opt});if(r.status===401){location='/login';return}
+  const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(typeof j.detail==='string'?j.detail:'Request failed ('+r.status+')');banner('');return j}
+ catch(e){if(e.name==='AbortError')throw new Error('The server took too long. Please try again.');if(e instanceof TypeError)throw new Error('Cannot reach the server. Check that the app and FalkorDB are running.');throw e}finally{clearTimeout(t)}}
+let P=null,SUBJ=null,TOPIC_IDS=[];
+async function init(){try{const [sj,p]=await Promise.all([api('/api/agent/subjects'),api('/api/profile')]);P=p;
+  $('#subject').innerHTML=sj.subjects.map(s=>`<option value="${esc(s.subject)}">${esc(s.title)}</option>`).join('');
+  let want=null;try{want=localStorage.getItem('wmd.subject')}catch(e){}
+  SUBJ=sj.subjects.some(s=>s.subject===want)?want:(sj.subjects.find(s=>s.subject==='mathematics')||sj.subjects[0]||{}).subject;
+  $('#subject').value=SUBJ;document.querySelector(`input[name=lvl][value=${p.level}]`).checked=true;$('#hpw').value=p.hours_per_week;
+  $('#pstate').textContent=p.onboarded?'saved':'not set up yet';await loadTopics()}
+ catch(e){banner(e.message);$('#topics').textContent='Could not load topics.'}}
+async function loadTopics(){try{const g=await api('/api/agent/graph?subject='+encodeURIComponent(SUBJ));TOPIC_IDS=g.topics.map(t=>t.id);
+  $('#topics').innerHTML=g.topics.map(t=>`<label class="o"><input type="checkbox" value="${esc(t.id)}" ${P.known_topic_ids.includes(t.id)?'checked':''}> ${esc(t.title)}</label>`).join('')}
+ catch(e){banner(e.message);$('#topics').textContent='Could not load topics.'}}
+$('#subject').onchange=e=>{SUBJ=e.target.value;try{localStorage.setItem('wmd.subject',SUBJ)}catch(x){}
+ if(P)P.known_topic_ids=[...P.known_topic_ids.filter(i=>!TOPIC_IDS.includes(i)),...[...document.querySelectorAll('#topics input:checked')].map(i=>i.value)];
+ $('#out').hidden=true;loadTopics()};
+$('#save').onclick=async()=>{const b=$('#save');b.disabled=true;
+ try{await api('/api/profile',{method:'POST',body:JSON.stringify({level:document.querySelector('input[name=lvl]:checked').value,hours_per_week:+$('#hpw').value,
+  known_topic_ids:[...P.known_topic_ids.filter(i=>!TOPIC_IDS.includes(i)),...[...document.querySelectorAll('#topics input:checked')].map(i=>i.value)]})});P.known_topic_ids=[...P.known_topic_ids.filter(i=>!TOPIC_IDS.includes(i)),...[...document.querySelectorAll('#topics input:checked')].map(i=>i.value)];$('#pstate').textContent='saved';$('#saved').textContent='Saved.'}catch(e){banner(e.message)}finally{b.disabled=false}};
+function render(a){const o=$('#out');o.hidden=false;
+ const body=esc(a.answer).replace(/\[(\d+)\]/g,'<sup>[$1]</sup>');
+ let h=`<div><span class="badge">${a.mode==='llm'?'AI answer from the lessons':a.mode==='extractive'?'from the lessons':'not covered'}</span>`+
+  (a.covered?`<span class="badge">pitched at ${esc(a.level_used)}</span><span class="badge">${esc(a.retrieval)}</span>`:'')+`</div>`;
+ if(a.covered)h+=`<p class="muted" style="font-size:13px;margin:4px 0">Level ${esc(a.level_used)} ${esc(a.level_reason)}.${a.fallback_reason?' (AI unavailable, showing lesson text: '+esc(a.fallback_reason)+')':''}</p>`;
+ h+=`<div class="ans">${body}</div>`;
+ if(a.focus_title)h+=`<p class="chips muted">Topic: <b>${esc(a.focus_title)}</b> (${esc(a.focus_status)}) ${a.focus_has_quiz?`<a href="/quiz/${esc(a.focus_subtopic_id)}">Quiz me</a>`:'<span class="badge">no quiz written for this subject yet</span>'}</p>`;
+ if(a.weak_prerequisites.length)h+=`<p><b>${a.prereq_basis==='inferred'?'Earlier in the syllabus (order inferred, not a verified prerequisite)':'Prerequisites to firm up'}</b></p><div class="chips">`+a.weak_prerequisites.map(w=>w.quiz_url?`<a href="${w.quiz_url}">${esc(w.title)} · ${esc(w.status)}</a>`:`<span class="badge">${esc(w.title)} · ${esc(w.status)}</span>`).join('')+'</div>';
+ if(a.related.length)h+=`<p class="muted">Related: ${a.related.map(r=>esc(r.title)).join(', ')}</p>`;
+ if(a.citations.length)h+=`<details><summary><b>Sources (${a.citations.length})</b></summary>`+a.citations.map(c=>`<div class="cite"><b>[${c.n}]</b> ${esc(c.subtopic_title)} · <i>${esc(c.section)}</i><br><span class="muted">${esc(c.excerpt)}…</span></div>`).join('')+'</details>';
+ o.innerHTML=h}
+$('#ask').onclick=async()=>{const q=$('#q').value.trim();if(q.length<3)return;const b=$('#ask');b.disabled=true;$('#status').innerHTML='<span class="spin"></span> Searching the graph…';
+ try{render(await api('/api/tutor/ask',{method:'POST',body:JSON.stringify({question:q,subject:SUBJ})}));$('#status').textContent=''}catch(e){$('#status').textContent='';banner(e.message)}finally{b.disabled=false}};
+$('#q').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.metaKey||e.ctrlKey))$('#ask').click()});
+init();
+</script></body></html>

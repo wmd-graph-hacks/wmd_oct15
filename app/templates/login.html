@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in · Study planner</title><link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="login-page">
+  <main class="login-card">
+    <a class="brand" href="/login"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5c3.2-.8 5.9-.3 8 1.2v12c-2.1-1.5-4.8-2-8-1.2v-12Zm16 0c-3.2-.8-5.9-.3-8 1.2v12c2.1-1.5 4.8-2-8-1.2v-12Z"/><path d="M12 6.8v12"/></svg></span><span>study<span class="brand-light">space</span></span></a>
+    <p class="eyebrow">YOUR LEARNING DESK</p>
+    <h1>Make your next study hour count.</h1>
+    <p class="muted">A plan that follows what depends on what, and adapts to your latest checks.</p>
+    {% if auth_mode == "demo" %}
+      <p class="notice">Local demo sign-in. Use this only on your development machine.</p>
+      <form method="post" action="/auth/demo"><button class="button primary" type="submit">Continue as demo learner</button></form>
+    {% else %}
+      <button class="button primary" id="google-sign-in">Continue with Google</button>
+      <p class="small muted" id="auth-error" aria-live="polite"></p>
+      <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+        const config = {apiKey: {{ firebase_api_key|tojson }}, authDomain: {{ firebase_auth_domain|tojson }}, projectId: {{ firebase_project_id|tojson }}, appId: {{ firebase_app_id|tojson }}};
+        document.querySelector("#google-sign-in").addEventListener("click", async () => {
+          try {
+            const auth = getAuth(initializeApp(config));
+            const result = await signInWithPopup(auth, new GoogleAuthProvider());
+            const idToken = await result.user.getIdToken();
+            const response = await fetch("/auth/session", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({id_token: idToken})});
+            if (response.redirected) window.location.assign(response.url);
+            else window.location.assign("/");
+          } catch (error) { document.querySelector("#auth-error").textContent = "Sign-in failed. Check Firebase setup and try again."; }
+        });
+      </script>
+    {% endif %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,50 @@
+subtopic_id: biology-developmental-biology-hox-genes
+questions:
+- id: hox-genes-mechanisms-and-methods-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Developmental Biology and
+    this lesson?
+  options:
+  - Hox genes
+  - HTTP cache invalidation
+  - Bellman optimality equation
+  - Coulomb's law
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept Hox genes in the unit.
+  explanation: Hox genes is one of the named concepts in this unit. Use its definition
+    and relationships in context, rather than treating the name alone as understanding.
+- id: hox-genes-mechanisms-and-methods-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Developmental Biology and
+    this lesson?
+  options:
+  - organogenesis
+  - HTTP cache invalidation
+  - Bellman optimality equation
+  - Coulomb's law
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept organogenesis in the unit.
+  explanation: organogenesis is one of the named concepts in this unit. Use its definition
+    and relationships in context, rather than treating the name alone as understanding.
+- id: hox-genes-mechanisms-and-methods-reasoning
+  level: 3
+  stem: Which evidence best supports a causal biological explanation?
+  options:
+  - Use a controlled comparison that tests a prediction while measuring the relevant
+    outcome.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Use a controlled comparison that tests a prediction while measuring
+    the relevant outcome. State the biological scale and hypothesis, identify the
+    control and measured outcome, trace the proposed mechanism, and distinguish correlation
+    from causal evidence. Consider biological variability and ethical limits.

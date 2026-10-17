@@ -1,0 +1,91 @@
+subtopic_id: physics-thermodynamics-core-concepts
+questions:
+- id: thermo-1
+  level: 1
+  stem: What does the first law of thermodynamics express?
+  options:
+  - Conservation of energy for a thermodynamic system
+  - That heat always flows into a system
+  - That every process is reversible
+  - That temperature is conserved
+  answer: 0
+  hints:
+  - It is an energy balance.
+  - Heat and work transfer energy across the system boundary.
+  explanation: The first law accounts for changes in internal energy through heat
+    and work, with signs set by convention.
+- id: thermo-2
+  level: 2
+  stem: For an isolated system, what does the second law say about entropy?
+  options:
+  - It does not decrease for a spontaneous process
+  - It must remain zero
+  - It always decreases
+  - It equals the system's internal energy
+  answer: 0
+  hints:
+  - An isolated system exchanges neither matter nor energy.
+  - The law gives a direction to spontaneous change.
+  explanation: The entropy of an isolated system stays constant for an ideal reversible
+    process and increases for an irreversible spontaneous process.
+- id: thermo-3
+  level: 3
+  stem: For an ideal gas undergoing an isothermal change, which statement is correct?
+  options:
+  - Its internal energy change is zero because internal energy depends only on temperature
+  - Its internal energy must increase because volume changes
+  - Its entropy change is always zero
+  - No heat can enter or leave the gas
+  answer: 0
+  hints:
+  - For an ideal gas, internal energy is a function of temperature.
+  - Isothermal means the temperature is constant.
+  explanation: At constant temperature an ideal gas has no change in internal energy,
+    though heat and work may be exchanged.
+- id: zeroth-foundations-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Thermodynamics and this
+    lesson?
+  options:
+  - Zeroth
+  - access control list
+  - DNA replication
+  - transaction isolation
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept Zeroth in the unit.
+  explanation: Zeroth is one of the named concepts in this unit. Use its definition
+    and relationships in context, rather than treating the name alone as understanding.
+- id: zeroth-foundations-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Thermodynamics and this
+    lesson?
+  options:
+  - first
+  - access control list
+  - DNA replication
+  - transaction isolation
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept first in the unit.
+  explanation: first is one of the named concepts in this unit. Use its definition
+    and relationships in context, rather than treating the name alone as understanding.
+- id: zeroth-foundations-reasoning
+  level: 3
+  stem: Which check best supports a physical model's prediction?
+  options:
+  - Check dimensions and limiting cases, then compare with measurement and uncertainty.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Check dimensions and limiting cases, then compare with measurement
+    and uncertainty. Draw the system and choose coordinates and sign conventions.
+    State approximations, derive the relation before inserting values, preserve units,
+    and check limiting cases or conservation laws.

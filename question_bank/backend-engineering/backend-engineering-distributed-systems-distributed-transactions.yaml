@@ -1,0 +1,52 @@
+subtopic_id: backend-engineering-distributed-systems-distributed-transactions
+questions:
+- id: distributed-transactions-mechanisms-and-methods-1
+  level: 1
+  stem: Which item is explicitly included in the scope of Distributed Systems and
+    this lesson?
+  options:
+  - distributed transactions (two-phase commit, sagas)
+  - Hardy-Weinberg equilibrium
+  - orbital angular momentum
+  - electrochemical potential
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept distributed transactions (two-phase commit, sagas) in the
+    unit.
+  explanation: distributed transactions (two-phase commit, sagas) is one of the named
+    concepts in this unit. Use its definition and relationships in context, rather
+    than treating the name alone as understanding.
+- id: distributed-transactions-mechanisms-and-methods-2
+  level: 2
+  stem: Which item is explicitly included in the scope of Distributed Systems and
+    this lesson?
+  options:
+  - clocks and ordering (Lamport, vector clocks)
+  - Hardy-Weinberg equilibrium
+  - orbital angular momentum
+  - electrochemical potential
+  answer: 0
+  hints:
+  - Use the lesson scope list.
+  - Look for the concept clocks and ordering (Lamport, vector clocks) in the unit.
+  explanation: clocks and ordering (Lamport, vector clocks) is one of the named concepts
+    in this unit. Use its definition and relationships in context, rather than treating
+    the name alone as understanding.
+- id: distributed-transactions-mechanisms-and-methods-reasoning
+  level: 3
+  stem: Which check best supports a claim that a service change is safe?
+  options:
+  - Test contracts on success and failure paths, including retries and state changes.
+  - Apply a familiar rule without checking whether its assumptions fit.
+  - Report an outcome without retaining the evidence or inputs needed to reproduce
+    it.
+  - Change several relevant conditions at once, making the cause of the outcome unclear.
+  answer: 0
+  hints:
+  - Choose evidence that tests the claim made in the question.
+  - Keep assumptions and the relevant comparison visible.
+  explanation: Test contracts on success and failure paths, including retries and
+    state changes. Trace one request from caller to storage and back. Mark trust boundaries,
+    state changes, failure points, and retry behavior; then test the contract at both
+    normal and partial-failure cases.
