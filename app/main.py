@@ -1,6 +1,9 @@
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from starlette.exceptions import HTTPException
+from fastapi.exception_handlers import http_exception_handler
+from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
 from app.api.router import router as api_router
@@ -17,8 +20,18 @@ app.include_router(api_router)
 app.include_router(agent_router)
 
 
+@app.exception_handler(HTTPException)
+async def friendly_http_error(request: Request, exc: HTTPException):
+    if exc.status_code == 503 and request.method == 'GET' and not request.url.path.startswith('/api/'):
+        return Jinja2Templates(directory=BASE_DIR / 'templates').TemplateResponse(
+            request, 'unavailable.html', {'retry_path': request.url.path}, status_code=503)
+    return await http_exception_handler(request, exc)
+
+
 @app.on_event("startup")
 def validate_security_settings():
+    if settings.profile_store not in ('falkordb', 'firestore'):
+        raise RuntimeError('PROFILE_STORE must be falkordb or firestore')
     if settings.app_env == "production" and settings.auth_mode != "firebase":
         raise RuntimeError("Production requires AUTH_MODE=firebase")
     if settings.app_env == "production" and settings.session_secret == "local-only-change-me":

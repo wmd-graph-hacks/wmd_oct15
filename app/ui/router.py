@@ -1,11 +1,13 @@
 from datetime import date
+import logging
 from pathlib import Path
 
 from fastapi import APIRouter, Form, Request
-from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse
+from pydantic import BaseModel, Field
+from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
-from app.auth import current_user, firebase_auth, make_demo_cookie
+from app.auth import FIREBASE_SESSION_SECONDS, current_user, firebase_auth, make_demo_cookie, serializer, optional_user, require_same_origin
 from app.config import settings
 from app.graph import repository
 
@@ -14,8 +16,11 @@ templates = Jinja2Templates(directory=BASE_DIR / "templates")
 router = APIRouter()
 
 
+@router.get("/signup", response_class=HTMLResponse)
 @router.get("/login", response_class=HTMLResponse)
 def login_page(request: Request):
+    if optional_user(request):
+        return RedirectResponse("/agent", status_code=303)
     return templates.TemplateResponse(request, "login.html", {"auth_mode": settings.auth_mode, "firebase_api_key": settings.firebase_api_key, "firebase_auth_domain": settings.firebase_auth_domain, "firebase_project_id": settings.firebase_project_id, "firebase_app_id": settings.firebase_app_id})
 
 
@@ -28,40 +33,49 @@ def demo_login():
     return response
 
 
+class SessionBody(BaseModel):
+    id_token: str = Field(min_length=1, max_length=20000)
+
+
 @router.post("/auth/session")
-async def create_session(request: Request):
+def create_session(request: Request, payload: SessionBody):
     if settings.auth_mode != "firebase":
         return RedirectResponse("/login", status_code=303)
-    origin = request.headers.get("origin")
-    if not origin or origin.removeprefix("https://").removeprefix("http://").rstrip("/") != request.url.netloc:
-        return PlainTextResponse("Invalid request origin", status_code=403)
-    payload = await request.json()
-    if not payload.get("id_token"):
-        return RedirectResponse("/login", status_code=303)
+    require_same_origin(request)
     try:
         auth = firebase_auth()
-        decoded = auth.verify_id_token(payload["id_token"])
-        cookie = auth.create_session_cookie(payload["id_token"], expires_in=60 * 60 * 24 * 5)
-        repository.ensure_learner(decoded["uid"], decoded.get("name", "Learner"))
-        response = RedirectResponse("/", status_code=303)
-        response.set_cookie("study_session", cookie, httponly=True, secure=settings.session_cookie_secure, samesite="lax", max_age=60 * 60 * 24 * 5)
+        claims = auth.verify_id_token(payload.id_token)
+        if settings.app_env == "production":
+            cookie = auth.create_session_cookie(payload.id_token, expires_in=FIREBASE_SESSION_SECONDS)
+        else:
+            # Local ADC can verify tokens even when it lacks a quota project for Firebase cookie minting.
+            cookie = serializer.dumps({
+                "uid": claims["uid"], "name": claims.get("name", "Learner"),
+                "email": claims.get("email", ""), "mode": "firebase",
+            })
+        response = JSONResponse({"next": "/agent"})
+        response.set_cookie("study_session", cookie, httponly=True, secure=settings.session_cookie_secure,
+                            samesite="lax", max_age=FIREBASE_SESSION_SECONDS)
         return response
-    except Exception:
-        return RedirectResponse("/login?error=auth", status_code=303)
+    except Exception as exc:
+        logging.getLogger(__name__).exception("Firebase sign-in session creation failed")
+        return JSONResponse({"detail": "We couldn’t finish signing you in. Please try again. If this continues, contact the app owner."}, status_code=401)
 
 
 @router.post("/auth/logout")
-def logout():
+def logout(request: Request):
+    if request.headers.get("origin"):
+        require_same_origin(request)
     response = RedirectResponse("/login", status_code=303)
     response.delete_cookie("study_session")
     return response
 
 
-@router.get("/")
+@router.get("/", response_class=HTMLResponse)
 def home(request: Request):
-    """The study agent is the home page; the earlier 12-topic demo page is retired."""
-    current_user(request)
-    return RedirectResponse("/agent", status_code=303)
+    if optional_user(request):
+        return RedirectResponse("/agent", status_code=303)
+    return templates.TemplateResponse(request, "landing.html", {})
 
 
 @router.post("/plans")
