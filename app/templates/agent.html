@@ -36,18 +36,22 @@ button.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}butto
 .spin{width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:s 0.9s linear infinite}@keyframes s{to{transform:rotate(360deg)}}
 #detail{margin-top:10px;font-size:14px}#detail ul{margin:4px 0;padding-left:18px}
 .node{cursor:pointer}.node rect{transition:stroke-width .1s}.node:hover rect{stroke:#2b2a27;stroke-width:1.5}
+.dashboard-welcome{max-width:1800px;margin:auto;padding:30px 20px 10px}.dashboard-welcome h2{font:400 clamp(28px,4vw,44px)/1.2 Georgia,serif;margin:8px 0 12px;letter-spacing:-1px}.dashboard-welcome p{color:var(--mute);margin:0}.dashboard-welcome .welcome-label{font:600 10px ui-monospace,monospace;letter-spacing:1.4px;color:var(--accent)}header select{font:inherit;max-width:250px;padding:7px;border:1px solid var(--line);border-radius:7px;background:var(--card)}
+.saved-learning{max-width:1800px;margin:auto;padding:16px 20px 0;display:grid;grid-template-columns:1fr 1fr;gap:16px}.saved-learning h2{font:400 25px/1.3 Georgia,serif;margin:10px 0}.saved-learning .welcome-label{font:600 10px ui-monospace,monospace;letter-spacing:1px;color:var(--accent)}.continue-link{display:inline-block;background:var(--accent);color:white;text-decoration:none;padding:10px 17px;border-radius:8px;margin-top:10px}.progress-label{font-size:13px;margin-bottom:5px}progress{width:100%;accent-color:var(--sage);height:8px}.saved-plan{border-top:1px solid var(--line);padding:12px 0}.saved-plan summary{cursor:pointer;font-weight:600;overflow-wrap:anywhere}.saved-plan summary span{font-size:12px;font-weight:400;margin-left:8px}.saved-plan ol{max-height:260px;overflow:auto;padding-left:24px}.saved-plan li{margin:10px 0}.saved-plan small{display:block;color:var(--mute)}.saved-plan a{color:var(--ink)}@media(max-width:800px){.saved-learning{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<header><h1>✦ Study agent <span class="badge">{{ 'LLM on' if llm_enabled else 'deterministic playbook' }}</span></h1>
-<div><label for="subject" class="muted" style="display:inline;margin-right:6px">Subject</label><select id="subject" aria-label="Subject"></select> <a href="/tutor">Ask the tutor</a>{% if is_demo %}<a href="#" id="reset">Reset demo learner</a>{% endif %}<span class="muted">{{ user.name }}</span></div></header>
+<header><h1><a href="/agent" style="color:var(--ink)">✦ Studyspace</a></h1>
+<div><label for="subject" class="muted" style="display:inline;margin-right:6px">Learning space</label><select id="subject" aria-label="Subject"></select> <a href="/tutor">Ask the tutor</a><a href="/onboarding?edit=1">Edit profile</a>{% if is_demo %}<a href="#" id="reset">Reset demo learner</a>{% endif %}<form method="post" action="/auth/logout" style="display:inline"><button class="ghost" type="submit">Sign out</button></form></div></header>
+<section class="dashboard-welcome"><p class="welcome-label">YOUR LEARNING DESK</p><h2>{% if account_profile %}{{ 'Welcome back' if returning else 'Hi' }}, {{ account_profile.preferred_name or user.name }}.{% else %}Hi, {{ profile.preferred_name or user.name }}.{% endif %}</h2><p>{% if account_profile and account_profile.interest_area %}Let’s make some progress in {{ account_profile.interest_area }}.{% else %}A little direction for your next study session.{% endif %} <span id="progressSummary"></span></p></section>
 <div id="banner" role="alert"></div>
+<section id="saved-learning" class="saved-learning" aria-live="polite"><div class="card muted">Loading your study plans…</div></section>
 <main>
 <section class="col">
   <div class="card">
     <strong>What do you want to learn?</strong>
     <label for="goal">Goal</label><textarea id="goal" rows="2"></textarea>
-    <div class="row"><div><label for="hpw">Hours / week</label><input id="hpw" type="number" min="1" max="60" step="0.5" value="6"></div>
+    <div class="row"><div><label for="hpw">Hours / week</label><input id="hpw" type="number" min="1" max="60" step="0.5" value="{{ profile.hours_per_week }}"></div>
     <div><label for="weeks">Weeks available</label><input id="weeks" type="number" min="1" max="104" value="20"></div></div>
     <p><button id="go">Ask the agent</button> <span id="status" class="muted" aria-live="polite"></span></p>
   </div>
@@ -155,13 +159,17 @@ function select(id){sel=id;draw();const d=$('#detail');if(!id){d.className='mute
  <p>${n.has_quiz?`<a href="/quiz/${esc(id)}"><button class="ghost" type="button">Take a quiz</button></a> `:''}<button type="button" id="mkgoal">Make this my goal</button></p>`;
  $('#mkgoal').onclick=()=>{$('#goal').value='I want to learn '+n.title;$('#goal').focus();window.scrollTo({top:0,behavior:'smooth'})}}
 let flat=false,SUBJ=null,SUBJECTS=[];
+const SUBJECT_KEY={{ ('wmd.subject.' + user.uid)|tojson }};
+const PROFILE_SUBJECT={{ ((account_profile.interest_area if account_profile else profile.interest_subject) or '')|tojson }};
 async function loadSubjects(){
  try{SUBJECTS=(await api('/api/agent/subjects')).subjects}catch(e){banner(e.message);return}
  const sel=$('#subject');sel.innerHTML=SUBJECTS.map(s=>`<option value="${esc(s.subject)}">${esc(s.title)}${s.thin?' (thin data)':''}</option>`).join('');
- let want=null;try{want=new URLSearchParams(location.search).get('subject')||localStorage.getItem('wmd.subject')}catch(e){}
- SUBJ=SUBJECTS.some(s=>s.subject===want)?want:(SUBJECTS.find(s=>s.subject==='mathematics')||SUBJECTS[0]||{}).subject;
+ let want=null;try{want=new URLSearchParams(location.search).get('subject')||localStorage.getItem(SUBJECT_KEY)||PROFILE_SUBJECT}catch(e){want=PROFILE_SUBJECT}
+ const matching=SUBJECTS.find(s=>[s.subject,s.title].some(v=>v.toLowerCase()===(want||'').trim().toLowerCase()));
+ $('#progressSummary').textContent=SUBJECTS.length+' subjects to explore.';
+ SUBJ=matching?matching.subject:(SUBJECTS.find(s=>s.subject==='mathematics')||SUBJECTS[0]||{}).subject;
  sel.value=SUBJ;setSubject(false)}
-function setSubject(reset){const s=SUBJECTS.find(x=>x.subject===SUBJ)||{};try{localStorage.setItem('wmd.subject',SUBJ)}catch(e){}
+function setSubject(reset){const s=SUBJECTS.find(x=>x.subject===SUBJ)||{};try{localStorage.setItem(SUBJECT_KEY,SUBJ)}catch(e){}
  $('#goal').value=s.example_goal||'';$('#mapTitle').textContent=(s.title||'')+' prerequisite map';
  const note=$('#mapNote');note.hidden=!s.thin;note.textContent=s.authored_edges?'':'order inferred from syllabus stages';
  note.title=s.thin?'This subject has one generic lesson per topic and no authored prerequisites; links are inferred from syllabus stage order.':'';
@@ -187,7 +195,7 @@ async function showProposal(id){let p;try{p=await api('/api/agent/proposals/'+id
   (p.checkpoint_quizzes.length?`<p>Self-test checkpoints: ${p.checkpoint_quizzes.map(q=>`<a href="/quiz/${q}">${esc((byId[q]||{}).title||q)}</a>`).join(', ')}</p>`:'');
  if(p.status==='proposed')$('#actions').innerHTML=`<button id="ok">Approve this plan</button> <button class="ghost" id="no">Not now</button>`;
  else $('#actions').innerHTML=`<span class="ok">Plan ${esc(p.status)}.</span>`;
- const ok=$('#ok');if(ok){const act=async(path)=>{ok.disabled=true;try{await api(path,{method:'POST'});showProposal(id)}catch(e){banner(e.message);ok.disabled=false}};
+ const ok=$('#ok');if(ok){const act=async(path)=>{ok.disabled=true;try{await api(path,{method:'POST'});showProposal(id);window.dispatchEvent(new Event('plans-updated'))}catch(e){banner(e.message);ok.disabled=false}};
   ok.onclick=()=>act(`/api/agent/proposals/${id}/approve`);$('#no').onclick=()=>act(`/api/agent/proposals/${id}/reject`)}}
 $('#go').onclick=async()=>{const b=$('#go');b.disabled=true;$('#status').textContent='Agent is querying the graph…';
  try{const run=await api('/api/agent/runs',{method:'POST',body:JSON.stringify({goal:$('#goal').value,subject:SUBJ,hours_per_week:+$('#hpw').value,weeks_available:+$('#weeks').value})},90000);
@@ -196,4 +204,5 @@ $('#go').onclick=async()=>{const b=$('#go');b.disabled=true;$('#status').textCon
 const rs=$('#reset');if(rs)rs.onclick=async e=>{e.preventDefault();try{await api('/api/agent/demo/reset',{method:'POST'});HL={};sel=null;$('#onlyNeeded').checked=false;$('#onlyNeeded').disabled=true;await loadGraph();$('#traceCard').hidden=$('#answerCard').hidden=true}catch(er){banner(er.message)}};
 loadSubjects();
 </script>
+<script type="module" src="/static/plans.js"></script>
 </body></html>

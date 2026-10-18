@@ -33,6 +33,7 @@ class Settings:
     firebase_project_id: str = os.getenv("FIREBASE_PROJECT_ID", "")
     firebase_app_id: str = os.getenv("FIREBASE_APP_ID", "")
     firebase_service_account: str = os.getenv("FIREBASE_SERVICE_ACCOUNT", "")
+    profile_store: str = os.getenv("PROFILE_STORE", "falkordb")
     session_cookie_secure: bool = os.getenv("SESSION_COOKIE_SECURE", "false").lower() == "true"
     ai_enabled: bool = os.getenv("AI_ENABLED", "false").lower() == "true"
     ai_model: str = os.getenv("AI_MODEL", "") or _LLM_CONFIG.get("primary_model", "")

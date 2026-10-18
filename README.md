@@ -84,14 +84,20 @@ The first page lets you choose an exam goal (quadratics, limits, or derivatives)
 
 ## Google sign-in setup
 
-The default `AUTH_MODE=demo` is only for local development. To use Google sign-in, create a Firebase project, enable Google as a sign-in provider, add the app's local/deployed domain to authorized domains, and set `AUTH_MODE=firebase` plus the Firebase web configuration values in `.env`. Set `FIREBASE_SERVICE_ACCOUNT` to the path of a service-account JSON file available to the server, or configure Application Default Credentials. Never commit credentials. For deployment, set `APP_ENV=production`, a strong `SESSION_SECRET`, and `SESSION_COOKIE_SECURE=true`.
+Google sign-in uses Firebase Authentication. New users complete a profile once (full name, preferred name, optional phone, role, industry, and learning interest); returning users go directly to their personalized dashboard. `/` is the public landing page, `/login` and `/signup` use the same Google identity flow, and `/onboarding?edit=1` edits an existing profile.
+
+Set `AUTH_MODE=firebase` and the Firebase web configuration in `.env`. Enable Google's sign-in provider and authorize the local/deployed domain in Firebase. The server verifies the Google ID token before setting a five-day HttpOnly session. Local development uses a signed app cookie, avoiding Firebase's session-cookie quota-project requirement. Production uses Firebase Admin session cookies with revocation checks; configure Admin credentials, `APP_ENV=production`, a strong `SESSION_SECRET`, and `SESSION_COOKIE_SECURE=true`.
+
+Account profiles use the existing FalkorDB by default (`PROFILE_STORE=falkordb`), keyed by verified Firebase UID. This does not require a separate Firestore database or Google Cloud billing setup. To use Firestore instead, create its default database, grant the server credentials access, and explicitly set `PROFILE_STORE=firestore`. Storage never switches automatically. Never commit credentials.
+
+Authentication regression tests: `AUTH_MODE=demo AI_ENABLED=false .venv/bin/python -m pytest tests/test_auth_onboarding.py tests/test_http.py tests/test_tutor.py -q`. `tests/browser_auth.cjs` runs the full browser flow with Google OAuth mocked and real local FalkorDB; it requires Node, Playwright, and installed Chrome. It cleans up its synthetic account afterward.
 
 ## Current scope
 
 - One hand-authored, 12-topic course and a short list of source-linked resources.
 - FalkorDB stores course topics, prerequisite relationships, resources, targeted checks, learner evidence, and persisted plans.
 - Graph retrieval and knowledge updates are deterministic; optional LiteLLM may select and order graph candidates. Configure Gemini as described above. The graph-validated fallback remains available if the provider is unavailable.
-- Local demo authentication is not suitable for a public deployment. Firebase session verification is enabled when `AUTH_MODE=firebase`.
+- Local demo authentication is not suitable for a public deployment. Firebase ID-token verification is enabled when `AUTH_MODE=firebase`.
 
 ## Study agent (hackathon slice)
 
@@ -112,3 +118,7 @@ The default `AUTH_MODE=demo` is only for local development. To use Google sign-i
 Every node carries a `subject` property (the folder name) and ids are globally unique (`math-…`, `physics-…`). The UI, agent (`AgentRequest.subject`), MCP server (`MCP_SUBJECT`) and tutor are subject-scoped; no edges cross subjects.
 
 Mathematics retains its 84 lessons and 92 authored prerequisite links. The other eight subjects now have 266 concept-sized lessons and 302 authored prerequisite links, plus a quiz bank for every lesson. Lessons use the supplied topic scopes, topic-specific explanations, and subject-specific worked-study guidance; the seed questions check scope knowledge and sound subject methods. Their breadth and depth still vary by topic and should be reviewed before use as a formal course. Curriculum files are fingerprinted at startup, so edits trigger an idempotent refresh of that subject's graph nodes, edges, and lesson chunks. Repeated boilerplate chunks are not indexed.
+
+### Saved plans and continuing lessons
+
+Approved agent proposals appear in the dashboard's saved plans section. “Continue learning” opens the first unstudied lesson in the most recently approved unfinished plan. Each lesson shows the course passages, an optional quiz link, and “Mark as studied.” Completion is persisted per user and plan, survives later visits, and is idempotent. Studied lessons do not automatically count as mastered; quizzes continue to provide mastery evidence. Draft and rejected proposals are excluded. Regression coverage lives in `tests/test_saved_plans.py` and `tests/browser_auth.cjs`.
