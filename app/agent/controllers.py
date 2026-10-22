@@ -191,6 +191,7 @@ class LLMController:
             completion = acompletion
         if not settings.ai_enabled or not self._models:
             raise RuntimeError("LLM disabled")
+        logger.info("agent LLM started model_count=%d tool_budget=%d", len(self._models), rec.max_calls)
         req = rec.run.request
         messages: list[dict] = [
             {"role": "system", "content": _SYSTEM},
@@ -202,22 +203,33 @@ class LLMController:
         for model in self._models:
             try:
                 await self._loop(completion, model, messages, tools, rec)
+                logger.info("agent LLM completed model=%s tool_calls=%d", model, len(rec.run.steps))
                 return
             except Exception as exc:
                 last_error = exc
-                logger.warning("agent LLM %s failed (%s)", model, type(exc).__name__)
+                logger.warning("agent LLM model attempt failed model=%s error_type=%s", model, type(exc).__name__)
                 if rec.run.steps:  # partial trace under one model: do not mix models
                     break
         raise RuntimeError(f"LLM controller failed: {last_error}") from last_error
 
     async def _loop(self, completion: Completion, model: str, messages: list[dict], tools: list[dict], rec: Recorder) -> None:
         msgs = list(messages)
-        for _ in range(settings.agent_max_tool_calls + 4):
-            resp = await completion(model=model, messages=msgs, tools=tools, tool_choice="auto",
-                                    max_tokens=settings.agent_max_tokens, timeout=settings.agent_timeout_seconds,
-                                    num_retries=0)
+        for turn in range(settings.agent_max_tool_calls + 4):
+            started = time.perf_counter()
+            logger.info("agent LLM request started model=%s turn=%d", model, turn + 1)
+            try:
+                resp = await completion(model=model, messages=msgs, tools=tools, tool_choice="auto",
+                                        max_tokens=settings.agent_max_tokens, timeout=settings.agent_timeout_seconds,
+                                        num_retries=0)
+            except Exception as exc:
+                elapsed_ms = int((time.perf_counter() - started) * 1000)
+                logger.warning("agent LLM request failed model=%s turn=%d elapsed_ms=%d error_type=%s",
+                               model, turn + 1, elapsed_ms, type(exc).__name__)
+                raise
             msg = resp.choices[0].message
             calls = getattr(msg, "tool_calls", None) or []
+            logger.info("agent LLM response received model=%s turn=%d elapsed_ms=%d tool_calls=%d",
+                        model, turn + 1, int((time.perf_counter() - started) * 1000), len(calls))
             if not calls:
                 text = (msg.content or "").strip()
                 if not rec.run.proposal_id:
