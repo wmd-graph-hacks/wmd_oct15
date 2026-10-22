@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import json
 import secrets
 import logging
@@ -25,10 +26,15 @@ async def run_agent(uid: str, req: AgentRequest, *, llm: LLMController | None = 
         run.controller = "llm"
         rec = Recorder(box, run, settings.agent_max_tool_calls)
         try:
-            await (llm or LLMController()).run(rec)
+            async with asyncio.timeout(settings.agent_run_timeout_seconds):
+                await (llm or LLMController()).run(rec)
             rec.finalize()
             _persist(uid, run)
             return run
+        except TimeoutError:
+            fallback = f"LLM agent exceeded its {settings.agent_run_timeout_seconds:g}s total budget"
+            logger.warning("agent LLM controller exceeded total budget, using playbook")
+            run = AgentRun(id=run.id, controller="playbook", request=req, fallback_reason=fallback)
         except Exception as exc:
             fallback = f"{type(exc).__name__}: {exc}"[:160]
             logger.warning("agent LLM controller failed, using playbook (%s)", type(exc).__name__)
@@ -37,6 +43,7 @@ async def run_agent(uid: str, req: AgentRequest, *, llm: LLMController | None = 
     try:
         await PlaybookController().run(rec)
         rec.finalize()
+        logger.info("agent playbook completed subject=%s tool_calls=%d", req.subject or "all", len(run.steps))
     except ToolError as exc:
         run.status, run.explanation = "failed", str(exc)
     _persist(uid, run)

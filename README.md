@@ -2,6 +2,16 @@
 
 An explainable study planner built with FastAPI and FalkorDB for **Track 01: Agents That Act on Connected Data**. Nine subjects are loaded from `artifacts/` (mathematics plus eight flat-structure subjects; see the subject notes below). Graph traversal finds the learner's prerequisite gaps and linked resources; optional AI selects and orders only among those retrieved candidates, then the backend validates its selection before saving the plan.
 
+## Screenshots
+
+| Landing page | Agent reasoning and prerequisite map |
+|---|---|
+| ![Studyspace landing page](docs/screenshots/landing.png) | ![Study agent showing its reasoning trace and prerequisite graph](docs/screenshots/agent-reasoning.png) |
+
+| Saved study plan | Lesson view |
+|---|---|
+| ![Dashboard with an approved saved study plan](docs/screenshots/saved-plan.png) | ![Study lesson opened from a saved plan](docs/screenshots/lesson.png) |
+
 ## Run locally
 
 Requirements: Python 3.11+ and Docker Compose.

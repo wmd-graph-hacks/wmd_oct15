@@ -1,6 +1,7 @@
 """Agent, quiz and graph-map endpoints. uid always comes from the verified session."""
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -27,6 +28,7 @@ from app.rag import embed as rag_embed
 
 templates = Jinja2Templates(directory=Path(__file__).resolve().parents[1] / "templates")
 router = APIRouter()
+logger = logging.getLogger(__name__)
 DEMO_UID = "demo-nimesh"
 # Demo learner: solid foundations and single-variable calculus basics.
 DEMO_MASTERED = [  # maths only; other subjects start empty
@@ -216,10 +218,14 @@ def graph_data(subject: str | None = None, user: dict = Depends(user_or_401)):
 
 @router.post("/api/agent/runs")
 async def create_run(body: AgentRequest, user: dict = Depends(user_or_401)):
+    logger.info("agent HTTP request received subject=%s ai_enabled=%s", body.subject or "all", settings.ai_enabled)
     try:
         run = await run_agent(user["uid"], body)
     except Exception as exc:
+        logger.warning("agent HTTP request failed subject=%s error_type=%s", body.subject or "all", type(exc).__name__)
         raise HTTPException(status_code=503, detail="Agent could not run") from exc
+    logger.info("agent HTTP request completed subject=%s controller=%s status=%s tool_calls=%d",
+                body.subject or "all", run.controller, run.status, len(run.steps))
     return run
 
 

@@ -44,6 +44,7 @@ class Settings:
     tutor_max_tokens: int = int(_LLM_CONFIG.get("tutor", {}).get("max_tokens", 600))
     agent_max_tool_calls: int = int(_LLM_CONFIG.get("agent", {}).get("max_tool_calls", 8))
     agent_timeout_seconds: float = float(_LLM_CONFIG.get("agent", {}).get("timeout_seconds", 40))
+    agent_run_timeout_seconds: float = float(_LLM_CONFIG.get("agent", {}).get("run_timeout_seconds", 55))
     ai_cache_size: int = int(os.getenv("AI_CACHE_SIZE", str(_LLM_CONFIG.get("cache_size", 256))))
 
 

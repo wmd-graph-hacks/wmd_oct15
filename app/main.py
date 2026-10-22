@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 from fastapi import FastAPI, Request
@@ -11,6 +12,8 @@ from app.config import settings
 from app.graph import repository
 from app.ui.agent_router import router as agent_router
 from app.ui.router import router as ui_router
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s %(message)s")
 
 BASE_DIR = Path(__file__).parent
 app = FastAPI(title="Study planner")

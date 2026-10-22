@@ -10,7 +10,8 @@
   "agent": {
     "max_tokens": 1200,
     "max_tool_calls": 8,
-    "timeout_seconds": 40
+    "timeout_seconds": 40,
+    "run_timeout_seconds": 55
   },
   "tutor": {
     "max_tokens": 600
