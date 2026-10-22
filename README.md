@@ -1,4 +1,4 @@
-# Study Planner
+# Studyspace — graph-powered study planner
 
 An explainable study planner built with FastAPI and FalkorDB for **Track 01: Agents That Act on Connected Data**. Nine subjects are loaded from `artifacts/` (mathematics plus eight flat-structure subjects; see the subject notes below). Graph traversal finds the learner's prerequisite gaps and linked resources; optional AI selects and orders only among those retrieved candidates, then the backend validates its selection before saving the plan.
 
@@ -11,6 +11,158 @@ An explainable study planner built with FastAPI and FalkorDB for **Track 01: Age
 | Saved study plan | Lesson view |
 |---|---|
 | ![Dashboard with an approved saved study plan](docs/screenshots/saved-plan.png) | ![Study lesson opened from a saved plan](docs/screenshots/lesson.png) |
+
+## Map of the graph: how FalkorDB powers Studyspace
+
+Studyspace enters **Agents That Act on Connected Data**. The `/agent` workflow uses two named FalkorDB graphs: shared curriculum in `wmd_kg`, and private learner/planning state in `study_planner` (configurable with `FALKORDB_GRAPH`). The diagrams below match the loader and agent code, checked against the running local database on October 18, 2026.
+
+### Nodes and relationships
+
+```mermaid
+flowchart LR
+    subgraph KG["wmd_kg · shared curriculum"]
+        C["Course\nid, subject, title"] -->|CONTAINS| T["Topic\nid, subject, title"]
+        T -->|CONTAINS| S["Subtopic · lesson\nid, subject, estimated_minutes"]
+        S -->|PREREQUISITE_OF| NEXT["Subtopic · dependent lesson"]
+        S -->|HAS_CHUNK| CH["Chunk\nlesson passage, source context"]
+    end
+    subgraph STUDENT["study_planner · learner state"]
+        L["Learner\nverified uid"] -->|HAS_KNOWLEDGE| K["LearnerSubtopic\nsubtopic_id, alpha, beta, n_attempts"]
+        L -->|TOOK| Q["QuizAttempt\nsubtopic_id, answer evidence"]
+        L -->|RAN| R["AgentRun\nrequest, tool trace, explanation"]
+        L -->|PROPOSED| P["PlanProposal\nstatus, payload, completed_ids"]
+    end
+    K -. "subtopic_id · application lookup" .-> S
+    Q -. "subtopic_id · application lookup" .-> S
+    P -. "lesson IDs inside payload · application lookup" .-> S
+```
+
+**Solid arrows are stored relationships. Dotted arrows are application lookups by lesson ID across the two graphs; they are not cross-graph FalkorDB edges.** Weekly plan items are stored inside `PlanProposal.payload`; studying a lesson updates `completed_ids`. Approval changes the proposal status from `proposed` to `committed`, rather than creating an extra approval relationship.
+
+| Graph | Nodes / relationships | What they contribute |
+| --- | --- | --- |
+| `wmd_kg` | `Course → CONTAINS → Topic → CONTAINS → Subtopic` | Subject-scoped curriculum hierarchy and lesson metadata. |
+| `wmd_kg` | `Subtopic → PREREQUISITE_OF → Subtopic` | Multi-hop prerequisite retrieval, dependency ordering, gatekeepers, and critical-path context. Edges carry `strength`, `status`, `scope`, and `derived`. |
+| `wmd_kg` | `Subtopic → HAS_CHUNK → Chunk` | Lesson passages for reading and source-grounded tutor retrieval. |
+| `study_planner` | `Learner → HAS_KNOWLEDGE → LearnerSubtopic` | Per-learner evidence used to estimate mastery and skip known foundations. |
+| `study_planner` | `Learner → TOOK → QuizAttempt` | Persistent quiz activity associated with a lesson. |
+| `study_planner` | `Learner → RAN → AgentRun` | Inspectable tool traces and explanations. |
+| `study_planner` | `Learner → PROPOSED → PlanProposal` | Drafts, student-approved plans, and saved reading progress. |
+
+The local curriculum snapshot contains **9 courses, 108 topics, 350 subtopics, 394 prerequisite relationships, and 1,126 lesson chunks**. Counts can change when curriculum files are edited and reloaded. Authentication uses Firebase; learner queries use the verified UID. Profiles also use FalkorDB by default, with an explicitly configured Firestore option.
+
+### Screenshots from the running FalkorDB Browser
+
+These are unaltered captures from [localhost:3000](http://localhost:3000), using the real `wmd_kg` curriculum graph.
+
+![FalkorDB Browser schema: Course, Topic, Subtopic, and Chunk connected by CONTAINS, HAS_CHUNK, and PREREQUISITE_OF](docs/images/falkordb-curriculum-schema.png)
+
+*Schema view shows the four stored curriculum labels and their relationships. The left panel reports the full graph: 1,593 nodes and 1,978 edges, including 394 prerequisite edges.*
+
+![FalkorDB Browser returning mathematics prerequisite connections from a read-only Cypher query](docs/images/falkordb-prerequisite-query.png)
+
+*Graph view displays 24 mathematics prerequisite relationships connecting 30 distinct lesson nodes. This is a limited query result, not the complete curriculum. The query used is:*
+
+```cypher
+MATCH (a:Subtopic)-[r:PREREQUISITE_OF]->(b:Subtopic)
+WHERE a.subject = 'mathematics'
+RETURN a, r, b LIMIT 24
+```
+
+### How the agent queries the graph
+
+```mermaid
+flowchart TD
+    G["Goal + subject + hours/week + available weeks"] --> STATE["get_student_state\nRead UID-scoped knowledge evidence"]
+    STATE --> FIND["find_topics\nResolve goal to curriculum IDs"]
+    FIND --> CLOSE["get_prerequisite_closure\nTraverse prerequisites; exclude mastered lessons"]
+    CLOSE --> ANALYZE["find_bottlenecks + critical_path + explain_path\nInspect the retrieved dependency graph"]
+    ANALYZE --> FIT["check_feasibility\nCompare estimated work with time budget"]
+    FIT --> PROPOSE["propose_plan\nValidate dependencies; persist proposal"]
+    PROPOSE --> APPROVE{"Student approves?"}
+    APPROVE -->|Yes| COMMIT["Separate approval endpoint\nRevalidate; set status = committed"]
+    APPROVE -->|No| DRAFT["Keep draft or reject"]
+    COMMIT --> NEXTLESSON["Continue learning\nNext unstudied lesson in saved plan"]
+    NEXTLESSON --> QUIZ["Quiz evidence updates knowledge\nUsed on future planning requests"]
+    QUIZ --> STATE
+```
+
+Both the optional Gemini tool-calling controller and the deterministic playbook use the same [agent tools](app/agent/tools.py). The diagram follows the playbook's main planning path; quiz assignment may add checkpoint tools. `commit_plan` is deliberately excluded from the tools offered to the agent. The student approves through a separate endpoint.
+
+#### 1. Retrieve learner evidence (`study_planner`)
+
+```cypher
+MATCH (:Learner {uid:$uid})-[:HAS_KNOWLEDGE]->(k:LearnerSubtopic)
+RETURN k.subtopic_id, k.alpha, k.beta, k.updated_ms,
+       k.n_attempts, k.inferred
+```
+
+The backend computes decayed mastery estimates from this evidence and supplies the mastered lesson IDs to curriculum retrieval. Reading completion is separate from quiz-based mastery.
+
+#### 2. Find unresolved prerequisites (`wmd_kg`)
+
+This is the core traversal used when soft prerequisites are included; relationship filters are expanded here for readability:
+
+```cypher
+MATCH (t:Subtopic)
+WHERE t.id IN $targets
+MATCH p=(pre:Subtopic)-[:PREREQUISITE_OF*1..20]->(t)
+WHERE NOT pre.id IN $mastered
+  AND all(r IN relationships(p)
+    WHERE r.status IN ['curated','approved']
+      AND coalesce(r.scope,'') <> 'course')
+  AND all(n IN nodes(p)[1..size(nodes(p))-1]
+    WHERE NOT n.id IN $mastered)
+RETURN DISTINCT pre.id, pre.title, pre.estimated_minutes,
+                pre.topic_order, pre.order
+```
+
+The application also adds each unmastered target itself. A mastered intermediate lesson cuts traversal along that path; this is an explicit prototype assumption. Inputs are bound parameters. For a goal such as **KKT conditions**, the retrieved context spans the connected calculus, linear algebra, and optimization foundations required by the curriculum.
+
+#### 3. Inspect a dependency path (`wmd_kg`)
+
+```cypher
+MATCH (a:Subtopic {id:$a}), (b:Subtopic {id:$b})
+WITH shortestPath((a)-[:PREREQUISITE_OF*]->(b)) AS p
+RETURN [n IN nodes(p) | n.id]
+```
+
+Path explanation also has a Python BFS fallback. Gatekeeper ranking calls FalkorDB's native betweenness algorithm, then restricts results to the required lessons:
+
+```cypher
+CALL algo.betweenness({nodeLabels:['Subtopic'], relationshipTypes:['PREREQUISITE_OF']})
+YIELD node, score
+RETURN node.id, node.title, score ORDER BY score DESC
+```
+
+If the selected lessons receive no positive scores, the application computes betweenness over their induced subgraph as a fallback. Dependency ordering (Kahn's algorithm) and duration-weighted critical-path calculations run in Python over graph data retrieved from FalkorDB; feasibility compares total estimated work with the study budget.
+
+#### 4. Resume an approved plan (`study_planner`)
+
+```cypher
+MATCH (p:PlanProposal {uid:$uid, status:'committed'})
+RETURN p.id, p.payload, p.completed_ids, p.committed_ms
+ORDER BY p.committed_ms DESC, p.id
+```
+
+The backend selects the first unstudied lesson in the latest unfinished approved plan. Repeated completion clicks are idempotent. New quiz evidence affects future planning requests; existing approved plans are not silently rewritten.
+
+**Implementation:** [loader](app/kg/loader.py) · [Cypher and graph algorithms](app/kg/queries.py) · [agent tools](app/agent/tools.py) · [controllers](app/agent/controllers.py) · [learner evidence](app/learn/state.py) · [saved plans](app/learn/plans.py).
+
+**Inspect locally:** open the FalkorDB Browser at [localhost:3000](http://localhost:3000), connect to the local database on port `6379` using your deployment credentials, and choose `wmd_kg`. These read-only queries show the stored curriculum and a small prerequisite neighborhood:
+
+```cypher
+MATCH (n) RETURN labels(n), count(n)
+```
+
+```cypher
+MATCH (a:Subtopic)-[r:PREREQUISITE_OF]->(b:Subtopic)
+WHERE a.subject = 'mathematics'
+RETURN a, r, b LIMIT 30
+```
+
+Select `study_planner` separately to inspect learner-state labels and relationships. Avoid sharing personal learner properties or credentials in public screenshots.
+
 
 ## Run locally
 
@@ -72,9 +224,9 @@ Inspect `plan_selection` in the JSON response. `graph_context_ai` means the mode
 
 Gemini 3 models have model-specific sampling behavior; this integration leaves `temperature` unset rather than forcing a low value. Each model request is capped at 200 output tokens, times out after `AI_TIMEOUT_SECONDS`, and makes no internal retries; if a request fails or returns unusable JSON, the next model in the configured list is called. Accepted proposals are cached in-process by graph context. See [LiteLLM's Gemini provider guide](https://docs.litellm.ai/docs/providers/gemini) and [Google's Gemini model list](https://ai.google.dev/gemini-api/docs/models) for current model IDs and provider behavior.
 
-## Graph model and recommendation behavior
+## Foundational API graph model (separate from the study agent)
 
-The course graph stores shared curriculum facts; each learner's evidence is attached to that learner:
+The older `/api/v1` foundational-math flow also uses `study_planner`, with `LearnerTopic`, `StudyPlan`, `PlanItem`, and resource/assessment relationships. The diagram below describes that separate API model; the current `/agent` graph map and query flow are documented above. In this foundational model:
 
 ```text
 (Course)-[:CONTAINS]->(Topic)-[:PREREQUISITE_OF]->(Topic)
