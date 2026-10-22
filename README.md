@@ -11,7 +11,6 @@ An explainable study planner built with FastAPI and FalkorDB for **Track 01: Age
 | Saved study plan | Lesson view |
 |---|---|
 | ![Dashboard with an approved saved study plan](docs/screenshots/saved-plan.png) | ![Study lesson opened from a saved plan](docs/screenshots/lesson.png) |
-
 ## Map of the graph: how FalkorDB powers Studyspace
 
 Studyspace enters **Agents That Act on Connected Data**. The `/agent` workflow uses two named FalkorDB graphs: shared curriculum in `wmd_kg`, and private learner/planning state in `study_planner` (configurable with `FALKORDB_GRAPH`). The diagrams below match the loader and agent code, checked against the running local database on October 18, 2026.
